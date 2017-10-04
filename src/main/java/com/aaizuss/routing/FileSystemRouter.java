@@ -1,0 +1,64 @@
+package com.aaizuss.routing;
+
+import com.aaizuss.Directory;
+import com.aaizuss.Router;
+import com.aaizuss.Status;
+import com.aaizuss.exception.DirectoryNotFoundException;
+import com.aaizuss.handler.DirectoryHandler;
+import com.aaizuss.handler.Handler;
+import com.aaizuss.http.Request;
+import com.aaizuss.http.Response;
+
+import java.util.Hashtable;
+
+public class FileSystemRouter extends Router {
+    private Directory directory;
+
+    public FileSystemRouter(Directory directory) {
+        super();
+        this.directory = directory;
+    }
+
+    public FileSystemRouter(Directory directory, Hashtable<String,Handler> routes) {
+        super(routes);
+        this.directory = new Directory();
+    }
+
+    @Override
+    public Handler getHandler(Request request) {
+        System.out.println("routing request: " + request.getUri());
+        Handler handler = super.getHandler(request);
+        if (handler == null) {
+            try {
+                return setupDirectoryHandler(request);
+            } catch (DirectoryNotFoundException e) {
+                return null;
+            }
+        } else {
+            return handler;
+        }
+    }
+
+    @Override
+    public Response getResponse(Request request) {
+        Handler handler = getHandler(request);
+        if (handler == null) {
+            return new Response(Status.NOT_FOUND);
+        }
+        return handler.execute();
+    }
+
+    private DirectoryHandler setupDirectoryHandler(Request request) throws DirectoryNotFoundException {
+        String newPath = directory.getPathString() + formatUriForDirectory(request.getUri());
+        Directory changedDirectory = new Directory(newPath);
+        return new DirectoryHandler(request, changedDirectory, directory);
+    }
+
+    private String formatUriForDirectory(String uri) {
+        if (uri.startsWith("/")) {
+            return uri.substring(1, uri.length());
+        } else {
+            return uri;
+        }
+    }
+}
