@@ -18,22 +18,45 @@ public class MediaContentHandler implements Handler {
     }
 
     public Response execute() {
-        if (supportsRequest()) {
-            Response response = new Response(Status.OK);
-            response.setBody(ResourceReader.getContent(request.getUri(), directory));
-            response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
-            return response;
-        } else {
-            return notAllowedResponse();
+        switch (request.getMethod()) {
+            case RequestMethods.GET:
+                return getResponse();
+            case RequestMethods.HEAD:
+                return headResponse();
+            case RequestMethods.OPTIONS:
+                return optionsResponse();
+            default:
+                return notAllowedResponse();
         }
     }
 
     private Response notAllowedResponse() {
-        return new Response(Status.METHOD_NOT_ALLOWED);
+        Response response = new Response(Status.METHOD_NOT_ALLOWED);
+        response.setHeader(Header.ALLOW, "GET,HEAD,OPTIONS");
+        return response;
     }
 
-    private boolean supportsRequest() {
-        String method = request.getMethod();
-        return method.equals(RequestMethods.GET) || method.equals(RequestMethods.HEAD);
+
+    private Response optionsResponse() {
+        Response response = new Response(Status.OK);
+        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
+        response.setHeader(Header.ALLOW, "GET,HEAD,OPTIONS");
+        return response;
+    }
+
+    private Response headResponse() {
+        return statusAndHeaders();
+    }
+
+    private Response getResponse() {
+        Response response = statusAndHeaders();
+        response.setBody(ResourceReader.getContent(request.getUri(), directory));
+        return response;
+    }
+
+    private Response statusAndHeaders() {
+        Response response = new Response(Status.OK);
+        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
+        return response;
     }
 }

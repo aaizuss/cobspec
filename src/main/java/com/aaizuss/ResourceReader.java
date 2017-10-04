@@ -19,25 +19,6 @@ public class ResourceReader {
         return getContent(filepath);
     }
 
-    public static byte[] getContent(String filepath) {
-        byte[] content = new byte[0];
-        File file = new File(filepath);
-        if (file.isFile()) {
-            try {
-                content = Files.readAllBytes(file.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return content;
-    }
-
-    private static String getExtension(String filename) {
-        int startIndex = filename.indexOf(".") + 1;
-        int endIndex = filename.length();
-        return filename.substring(startIndex, endIndex);
-    }
-
     public static byte[] getPartialContent(String filepath, int rangeStartInclusive, int rangeEndExclusive) {
         byte[] allContent = getContent(filepath);
         return Arrays.copyOfRange(allContent, rangeStartInclusive, rangeEndExclusive);
@@ -59,5 +40,24 @@ public class ResourceReader {
         typesMap.put("gif", "image/gif");
         typesMap.put("md", "text/markdown");
         return typesMap;
+    }
+
+    private static byte[] getContent(String filepath) {
+        byte[] content = new byte[0];
+        File file = new File(filepath);
+        if (file.isFile()) {
+            try {
+                content = Files.readAllBytes(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return content;
+    }
+
+    private static String getExtension(String filename) {
+        int startIndex = filename.indexOf(".") + 1;
+        int endIndex = filename.length();
+        return filename.substring(startIndex, endIndex);
     }
 }

@@ -19,7 +19,7 @@ public class FileSystemRouter extends Router {
 
     public FileSystemRouter(Directory directory, Hashtable<String,Handler> routes) {
         super(routes);
-        this.directory = new Directory();
+        this.directory = directory;
     }
 
     @Override
