@@ -15,15 +15,6 @@ public class ResourceReaderTest {
     }
 
     @Test
-    public void testGetContent() {
-        String expected = "I am a text file!";
-        String filename = "text-file.txt";
-        String filepath = System.getProperty("user.dir") + "/test-directory/" + filename;
-        String content = new String(getContent(filepath));
-        assertEquals(expected, content);
-    }
-
-    @Test
     public void testGetContentFromURI() throws Exception {
         String expected = "I am a text file!";
         Directory directory = new Directory(System.getProperty("user.dir") + "/test-directory/");

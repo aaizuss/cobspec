@@ -9,19 +9,16 @@ import com.aaizuss.http.Response;
 
 public class DirectoryHandler implements Handler {
     private DirectoryHtmlCreator htmlCreator;
-    private Request request;
 
-    public DirectoryHandler(Request request, Directory rootDirectory) {
+    public DirectoryHandler(Directory rootDirectory) {
         this.htmlCreator = new DirectoryHtmlCreator(rootDirectory);
-        this.request = request;
     }
 
-    public DirectoryHandler(Request request, Directory directory, Directory serverRootDirectory) {
+    public DirectoryHandler(Directory directory, Directory serverRootDirectory) {
         this.htmlCreator = new DirectoryHtmlCreator(directory, serverRootDirectory);
-        this.request = request;
     }
 
-    public Response execute() {
+    public Response execute(Request request) {
         switch (request.getMethod()) {
             case RequestMethods.GET:
                 return new Response(Status.OK, getLinksAsBytes());

@@ -27,7 +27,7 @@ public class FileSystemRouter extends Router {
         System.out.println("routing request: " + request.getUri());
         Handler handler = super.getHandler(request);
         if (handler == null) {
-            return new FileHandler(request, directory);
+            return new FileHandler(directory);
         } else {
             return handler;
         }
@@ -39,6 +39,6 @@ public class FileSystemRouter extends Router {
         if (handler == null) {
             return new Response(Status.NOT_FOUND);
         }
-        return handler.execute();
+        return handler.execute(request);
     }
 }

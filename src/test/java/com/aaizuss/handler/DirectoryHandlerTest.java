@@ -21,12 +21,12 @@ public class DirectoryHandlerTest {
     @Before
     public void setUp() throws DirectoryNotFoundException, IOException {
         directory = new Directory(ROOT);
-        handler = new DirectoryHandler(request, directory);
+        handler = new DirectoryHandler(directory);
     }
 
     @Test
     public void testDirectoryResponse() {
-        Response response = handler.execute();
+        Response response = handler.execute(request);
         String expectedBody = "<a href='/empty-folder'>empty-folder</a></br>\r\n" +
                 "<a href='/puppies'>puppies</a></br>\r\n" +
                 "<a href='/text-file.txt'>text-file.txt</a></br>\r\n";
@@ -38,16 +38,16 @@ public class DirectoryHandlerTest {
     @Test
     public void testPostRequestNotAllowed() {
         Request request = new Request("POST", "/");
-        handler = new DirectoryHandler(request, directory);
-        Response response = handler.execute();
+        handler = new DirectoryHandler(directory);
+        Response response = handler.execute(request);
         assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
     }
 
     @Test
     public void testInnerDirectory() throws DirectoryNotFoundException {
         Directory inner = new Directory(ROOT + "puppies");
-        handler = new DirectoryHandler(request, inner, directory);
-        Response response = handler.execute();
+        handler = new DirectoryHandler(inner, directory);
+        Response response = handler.execute(request);
         String expectedBody = "<a href='/'>< Back to Root</a></br>\r\n" +
                 "<a href='/puppies/broccoli.png'>broccoli.png</a></br>\r\n" +
                 "<a href='/puppies/pup1.jpg'>pup1.jpg</a></br>\r\n";

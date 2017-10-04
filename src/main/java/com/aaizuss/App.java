@@ -1,7 +1,7 @@
 package com.aaizuss;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.handler.Handler;
+import com.aaizuss.handler.*;
 import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;
 import com.aaizuss.routing.FileSystemRouter;
@@ -27,7 +27,11 @@ public class App {
         try {
             Directory directory = new Directory(directoryPath);
             Router router = new FileSystemRouter(directory);
-            //router.addRoute(RequestMethods.GET, "/", new MyHandler());
+            addOptionsRoutes(router);
+            router.addRoute(RequestMethods.GET, "/parameters", new ParameterDecode());
+            router.addRoute(RequestMethods.GET, "/redirect", new RedirectHandler());
+            router.addRoute(RequestMethods.GET, "/coffee", new CoffeeTeaHandler());
+            router.addRoute(RequestMethods.GET, "/tea", new CoffeeTeaHandler());
             return router;
         } catch (DirectoryNotFoundException e) {
             e.printStackTrace();
@@ -36,9 +40,14 @@ public class App {
         return new Router();
     }
 
-//    public static class MyHandler implements Handler {
-//        public Response execute() {
-//            return new Response(Status.OK);
-//        }
-//    }
+    public static void addOptionsRoutes(Router router) {
+        router.addRoute(RequestMethods.GET, "/method_options", new OptionsHandler());
+        router.addRoute(RequestMethods.OPTIONS, "/method_options", new OptionsHandler());
+        router.addRoute(RequestMethods.POST, "/method_options", new OptionsHandler());
+        router.addRoute(RequestMethods.PUT, "/method_options", new OptionsHandler());
+        router.addRoute(RequestMethods.HEAD, "/method_options", new OptionsHandler());
+        router.addRoute(RequestMethods.GET, "/method_options2", new OptionsHandler());
+        router.addRoute(RequestMethods.OPTIONS, "/method_options2", new OptionsHandler());
+    }
+
 }
