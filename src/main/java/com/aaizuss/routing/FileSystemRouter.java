@@ -3,8 +3,6 @@ package com.aaizuss.routing;
 import com.aaizuss.Directory;
 import com.aaizuss.Router;
 import com.aaizuss.Status;
-import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.handler.DirectoryHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -29,11 +27,7 @@ public class FileSystemRouter extends Router {
         System.out.println("routing request: " + request.getUri());
         Handler handler = super.getHandler(request);
         if (handler == null) {
-            try {
-                return setupDirectoryHandler(request);
-            } catch (DirectoryNotFoundException e) {
-                return null;
-            }
+            return new FileHandler(request, directory);
         } else {
             return handler;
         }
@@ -46,19 +40,5 @@ public class FileSystemRouter extends Router {
             return new Response(Status.NOT_FOUND);
         }
         return handler.execute();
-    }
-
-    private DirectoryHandler setupDirectoryHandler(Request request) throws DirectoryNotFoundException {
-        String newPath = directory.getPathString() + formatUriForDirectory(request.getUri());
-        Directory changedDirectory = new Directory(newPath);
-        return new DirectoryHandler(request, changedDirectory, directory);
-    }
-
-    private String formatUriForDirectory(String uri) {
-        if (uri.startsWith("/")) {
-            return uri.substring(1, uri.length());
-        } else {
-            return uri;
-        }
     }
 }

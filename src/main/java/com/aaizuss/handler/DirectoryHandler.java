@@ -27,37 +27,15 @@ public class DirectoryHandler implements Handler {
     public Response execute() {
         switch (request.getMethod()) {
             case RequestMethods.GET:
-                return get();
+                return new Response(Status.OK, getLinksAsBytes());
             case RequestMethods.HEAD:
-                return head();
+                return new Response(Status.OK);
             default:
                 return new Response(Status.METHOD_NOT_ALLOWED);
         }
     }
 
-    private boolean canServeDirectory() {
-        String path = directory.getPathString();
-        return Directory.isFolder(path) || request.getUri().equals("/");
-    }
-
     private byte[] getLinksAsBytes() {
         return htmlCreator.getLinkString().getBytes();
-    }
-
-    private Response get() {
-        if (canServeDirectory()) {
-            return new Response(Status.OK, getLinksAsBytes());
-        } else {
-            return new Response(Status.NOT_FOUND);
-        }
-
-    }
-
-    private Response head() {
-        if (canServeDirectory()) {
-            return new Response(Status.OK);
-        } else {
-            return new Response(Status.NOT_FOUND);
-        }
     }
 }

@@ -12,10 +12,6 @@ public class MediaContentHandler implements Handler {
     private Request request;
     private Directory directory;
 
-    // not sure if this class should be responsible for making sure the content exists...
-    // that might be the role of the application??
-    // if i include a check that the directory contains a resource, i can't test with a mock directory :(
-
     public MediaContentHandler(Request request, Directory directory) {
         this.request = request;
         this.directory = directory;
@@ -37,6 +33,7 @@ public class MediaContentHandler implements Handler {
     }
 
     private boolean supportsRequest() {
-        return request.getMethod().equals(RequestMethods.GET);
+        String method = request.getMethod();
+        return method.equals(RequestMethods.GET) || method.equals(RequestMethods.HEAD);
     }
 }

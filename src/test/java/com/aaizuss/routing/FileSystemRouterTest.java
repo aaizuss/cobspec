@@ -1,6 +1,7 @@
 package com.aaizuss.routing;
 
 import com.aaizuss.Directory;
+import com.aaizuss.Header;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.handler.DirectoryHandler;
@@ -29,16 +30,17 @@ public class FileSystemRouterTest {
     public void testGetHandlerForValidDirectoryRequest() {
         Handler handler = router.getHandler(directoryRequest);
 
-        assertTrue(handler instanceof DirectoryHandler);
+        assertTrue(handler instanceof FileHandler);
     }
 
     @Test
-    public void testGetHandlerForInvalidDirectoryRequestReturnsNull() {
+    public void testGetHandlerForInvalidDirectoryRequestReturnsFileHandler() {
         Request invalidDirectoryRequest = new Request("GET","/foo");
         Handler handler = router.getHandler(invalidDirectoryRequest);
 
-        assertTrue(handler == null);
+        assertTrue(handler instanceof FileHandler);
     }
+
 
     @Test
     public void testGetResponseForInvalidDirectoryRequest() {
@@ -46,5 +48,14 @@ public class FileSystemRouterTest {
         Response response = router.getResponse(invalidDirectoryRequest);
 
         assertEquals(Status.NOT_FOUND, response.getStatus());
+    }
+
+    @Test
+    public void testGetResponseForValidImageRequest() {
+        Request puppy = new Request("GET","/puppies/broccoli.png");
+        Response response = router.getResponse(puppy);
+
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
     }
 }
