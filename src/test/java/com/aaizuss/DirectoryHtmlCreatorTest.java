@@ -17,15 +17,15 @@ public class DirectoryHtmlCreatorTest {
     }
 
     private void makePuppiesDirectory() throws DirectoryNotFoundException {
-        puppiesDirectory = new Directory(System.getProperty("user.dir") + "/test-directory/puppies/");
+        puppiesDirectory = new Directory(TestConstants.TEST_DIR + "/puppies/");
     }
 
     private void makeFunDirectory() throws DirectoryNotFoundException {
-        funDirectory = new Directory(System.getProperty("user.dir") + "/fun-stuff/");
+        funDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/");
     }
 
     private void makeRootDirectory() throws DirectoryNotFoundException {
-        rootDirectory= new Directory(System.getProperty("user.dir") + "/test-directory/");
+        rootDirectory= new Directory(TestConstants.USER_DIR + "/test-directory/");
     }
 
     @Before
@@ -56,7 +56,7 @@ public class DirectoryHtmlCreatorTest {
 
     @Test
     public void testGetLinkStringNestedFolder() throws DirectoryNotFoundException {
-        Directory nestedDirectory = new Directory(System.getProperty("user.dir") + "/fun-stuff/journey/");
+        Directory nestedDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/journey/");
         DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(nestedDirectory, funDirectory);
         String expected = "<a href='/'>< Back to Root</a></br>\r\n" +
                 "<a href='/journey/come'>come</a></br>\r\n";
@@ -65,7 +65,7 @@ public class DirectoryHtmlCreatorTest {
 
     @Test
     public void testGetLinkStringForNestedFolderInFunDirectory() throws DirectoryNotFoundException {
-        Directory nestedDirectory = new Directory(System.getProperty("user.dir") + "/fun-stuff/journey/come/inside/");
+        Directory nestedDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/journey/come/inside/");
         DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(nestedDirectory, funDirectory);
         String expected = "<a href='/journey/come/inside/..'>< Back</a></br>\r\n" +
                 "<a href='/journey/come/inside/and-find'>and-find</a></br>\r\n";

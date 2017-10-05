@@ -9,22 +9,20 @@ import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;
 
 public class MediaContentHandler implements Handler {
-    private Request request;
     private Directory directory;
 
-    public MediaContentHandler(Request request, Directory directory) {
-        this.request = request;
+    public MediaContentHandler(Directory directory) {
         this.directory = directory;
     }
 
-    public Response execute() {
+    public Response execute(Request request) {
         switch (request.getMethod()) {
             case RequestMethods.GET:
-                return getResponse();
+                return getResponse(request);
             case RequestMethods.HEAD:
-                return headResponse();
+                return headResponse(request);
             case RequestMethods.OPTIONS:
-                return optionsResponse();
+                return optionsResponse(request);
             default:
                 return notAllowedResponse();
         }
@@ -37,24 +35,24 @@ public class MediaContentHandler implements Handler {
     }
 
 
-    private Response optionsResponse() {
+    private Response optionsResponse(Request request) {
         Response response = new Response(Status.OK);
         response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
         response.setHeader(Header.ALLOW, "GET,HEAD,OPTIONS");
         return response;
     }
 
-    private Response headResponse() {
-        return statusAndHeaders();
+    private Response headResponse(Request request) {
+        return statusAndHeaders(request);
     }
 
-    private Response getResponse() {
-        Response response = statusAndHeaders();
+    private Response getResponse(Request request) {
+        Response response = statusAndHeaders(request);
         response.setBody(ResourceReader.getContent(request.getUri(), directory));
         return response;
     }
 
-    private Response statusAndHeaders() {
+    private Response statusAndHeaders(Request request) {
         Response response = new Response(Status.OK);
         response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
         return response;

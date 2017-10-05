@@ -1,5 +1,7 @@
 package com.aaizuss;
 
+import com.aaizuss.http.ContentRange;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,19 +14,25 @@ public class ResourceReader {
         return typesMap.getOrDefault(extension, "application/octet-stream");
     }
 
-    //considering changing methods so the parameter is a uri instead of a filename
-    // to make it easier to use
     public static byte[] getContent(String uri, Directory directory) {
         String filepath = directory.getPathToResource(uri);
         return getContent(filepath);
     }
 
-    public static byte[] getPartialContent(String filepath, int rangeStartInclusive, int rangeEndExclusive) {
-        byte[] allContent = getContent(filepath);
-        return Arrays.copyOfRange(allContent, rangeStartInclusive, rangeEndExclusive);
+    public static byte[] getPartialContent(String uri, Directory directory, Hashtable<String,Integer> range) {
+        String filepath = directory.getPathToResource(uri);
+        int contentLength = getContentLength(filepath);
+        int[] contentRange = ContentRange.getRange(range, contentLength);
+        byte[] content = getContent(filepath);
+
+        int start = contentRange[0];
+        int end = contentRange[1];
+
+        return Arrays.copyOfRange(content, start, end);
     }
 
-    public static int getContentLength(String filepath) {
+
+    private static int getContentLength(String filepath) {
         byte[] content = getContent(filepath);
         return content.length;
     }

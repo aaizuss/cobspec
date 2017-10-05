@@ -27,8 +27,8 @@ public class MediaContentHandlerTest {
 
     @Test
     public void testResponseHeaderAndStatus() {
-        handler = new MediaContentHandler(pngRequest, directory);
-        Response response = handler.execute();
+        handler = new MediaContentHandler(directory);
+        Response response = handler.execute(pngRequest);
         Assert.assertEquals(Status.OK, response.getStatus());
         assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
     }
@@ -36,8 +36,17 @@ public class MediaContentHandlerTest {
     @Test
     public void testPostRequestReturnsMethodNotAllowed() {
         Request postRequest = new Request("POST", "/image.png");
-        handler = new MediaContentHandler(postRequest, directory);
-        Response response = handler.execute();
+        handler = new MediaContentHandler(directory);
+        Response response = handler.execute(postRequest);
         assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
+    }
+
+    @Test
+    public void testOptionsRequest() {
+        Request optionsRequest = new Request("OPTIONS", "/image.png");
+        handler = new MediaContentHandler(directory);
+        Response response = handler.execute(optionsRequest);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("GET,HEAD,OPTIONS", response.getHeader(Header.ALLOW));
     }
 }

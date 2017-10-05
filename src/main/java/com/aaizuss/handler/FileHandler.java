@@ -1,43 +1,47 @@
-package com.aaizuss.routing;
+package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
+import com.aaizuss.ResourceReader;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.handler.DirectoryHandler;
-import com.aaizuss.handler.Handler;
-import com.aaizuss.handler.MediaContentHandler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 
-
 public class FileHandler implements Handler {
-    private Request request;
     private Directory directory;
 
-    public FileHandler(Request request, Directory directory) {
-        this.request = request;
+    public FileHandler(Directory directory) {
         this.directory = directory;
     }
 
-    public Response execute() {
-        if (canServeDirectory()) {
+    public Response execute(Request request) {
+        if (canServeDirectory(request)) {
             try {
-                return setupDirectoryHandler(request).execute();
+                return setupDirectoryHandler(request).execute(request);
             } catch (DirectoryNotFoundException e) {
                 e.printStackTrace();
                 return new Response(Status.NOT_FOUND);
             }
         } else if (directory.containsResource(request.getUri())) {
-            return new MediaContentHandler(request, directory).execute();
+            return responseForContentType(request);
         } else {
             return new Response(Status.NOT_FOUND);
+        }
+    }
+
+    private Response responseForContentType(Request request) {
+        String uri = request.getUri();
+        if (ResourceReader.getContentType(uri).contains("text")) {
+            return new TextContentHandler(directory).execute(request);
+        } else {
+            return new MediaContentHandler(directory).execute(request);
         }
     }
 
     private DirectoryHandler setupDirectoryHandler(Request request) throws DirectoryNotFoundException {
         String newPath = directory.getPathString() + formatUriForDirectory(request.getUri());
         Directory changedDirectory = new Directory(newPath);
-        return new DirectoryHandler(request, changedDirectory, directory);
+        return new DirectoryHandler(changedDirectory, directory);
     }
 
     private String formatUriForDirectory(String uri) {
@@ -48,7 +52,7 @@ public class FileHandler implements Handler {
         }
     }
 
-    private boolean canServeDirectory() {
+    private boolean canServeDirectory(Request request) {
         String path = directory.getPathString() + formatUriForDirectory(request.getUri());
         return Directory.isFolder(path) || request.getUri().equals("/");
     }
