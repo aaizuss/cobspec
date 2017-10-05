@@ -3,6 +3,7 @@ package com.aaizuss.routing;
 import com.aaizuss.Directory;
 import com.aaizuss.Router;
 import com.aaizuss.Status;
+import com.aaizuss.handler.FileHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;

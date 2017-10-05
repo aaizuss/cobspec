@@ -30,6 +30,14 @@ public class TextContentHandlerTest {
     }
 
     @Test
+    public void testDoesNotAllowPostToExistingResource() {
+        Request post = new Request("POST", "/file1");
+        TextContentHandler handler = new TextContentHandler(directory);
+        Response response = handler.execute(post);
+        assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
+    }
+
+    @Test
     public void testResponseForRegularRequest() {
         Response response = handler.execute(request);
         String content = "This is a file that contains text to read part of in order to fulfill a 206.\n";
@@ -70,7 +78,7 @@ public class TextContentHandlerTest {
     @Test
     public void testResponseBodyForPartialRequestOnlyEnd() {
         Response response = handler.execute(partialRequest);
-        String expected = "206.\n";
+        String expected = " 206.\n";
         assertEquals(expected, new String(response.getBody()));
     }
 

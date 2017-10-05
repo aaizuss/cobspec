@@ -20,6 +20,7 @@ public class TextContentHandler implements Handler {
             case RequestMethods.GET: return get(request);
             case RequestMethods.HEAD: return head(request);
             case RequestMethods.POST: return post(request);
+            case RequestMethods.PUT: return post(request);
             default: return new Response(Status.NOT_IMPLEMENTED);
         }
     }
@@ -51,8 +52,6 @@ public class TextContentHandler implements Handler {
             return new Response(Status.NOT_IMPLEMENTED);
         }
     }
-
-    // todo: put, post, delete?
 
     private Response partialResponse (Request request) {
         System.out.println("partial response!!!");

@@ -32,7 +32,7 @@ public class ResourceReader {
     }
 
 
-    public static int getContentLength(String filepath) {
+    private static int getContentLength(String filepath) {
         byte[] content = getContent(filepath);
         return content.length;
     }

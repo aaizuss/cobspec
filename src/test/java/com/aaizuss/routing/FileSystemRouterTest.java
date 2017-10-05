@@ -5,6 +5,7 @@ import com.aaizuss.FormResource;
 import com.aaizuss.Header;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
+import com.aaizuss.handler.FileHandler;
 import com.aaizuss.handler.FormHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;

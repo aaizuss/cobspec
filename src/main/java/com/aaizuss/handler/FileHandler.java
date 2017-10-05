@@ -1,4 +1,4 @@
-package com.aaizuss.routing;
+package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
 import com.aaizuss.ResourceReader;
