@@ -11,10 +11,12 @@ import java.util.Hashtable;
 
 public class FileSystemRouter extends Router {
     private Directory directory;
+    private Hashtable<String, Handler> resourceRoutes;
 
     public FileSystemRouter(Directory directory) {
         super();
         this.directory = directory;
+        this.resourceRoutes = new Hashtable<>();
     }
 
     public FileSystemRouter(Directory directory, Hashtable<String,Handler> routes) {
@@ -26,7 +28,10 @@ public class FileSystemRouter extends Router {
     public Handler getHandler(Request request) {
         System.out.println("routing request: " + request.getUri());
         Handler handler = super.getHandler(request);
-        if (handler == null) {
+        if (handler == null && resourceRoutes.containsKey(request.getUri())) {
+            return getResourceHandler(request);
+        }
+        else if (handler == null) {
             return new FileHandler(directory);
         } else {
             return handler;
@@ -40,5 +45,13 @@ public class FileSystemRouter extends Router {
             return new Response(Status.NOT_FOUND);
         }
         return handler.execute(request);
+    }
+
+    private Handler getResourceHandler(Request request) {
+        return resourceRoutes.get(request.getUri());
+    }
+
+    public void addResourceRoute(String uri, Handler handler) {
+        resourceRoutes.put(uri, handler);
     }
 }

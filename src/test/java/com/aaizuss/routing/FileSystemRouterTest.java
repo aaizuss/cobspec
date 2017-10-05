@@ -1,10 +1,11 @@
 package com.aaizuss.routing;
 
 import com.aaizuss.Directory;
+import com.aaizuss.FormResource;
 import com.aaizuss.Header;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.handler.DirectoryHandler;
+import com.aaizuss.handler.FormHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -57,5 +58,14 @@ public class FileSystemRouterTest {
 
         assertEquals(Status.OK, response.getStatus());
         assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
+    }
+
+    @Test
+    public void testResourceRoutes() {
+        router.addResourceRoute("/form", new FormHandler(new FormResource()));
+        Request request = new Request("GET","/form");
+        Handler handler = router.getHandler(request);
+
+        assertTrue(handler instanceof  FormHandler);
     }
 }
