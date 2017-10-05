@@ -27,6 +27,8 @@ public class TextContentHandler implements Handler {
                 return post(request);
             case RequestMethods.OPTIONS:
                 return options(request);
+            case RequestMethods.PATCH:
+                return new PatchHandler(directory).execute(request);
             default: return new Response(Status.METHOD_NOT_ALLOWED);
         }
     }
