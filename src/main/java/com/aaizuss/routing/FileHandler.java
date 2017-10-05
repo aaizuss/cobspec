@@ -1,14 +1,15 @@
 package com.aaizuss.routing;
 
 import com.aaizuss.Directory;
+import com.aaizuss.ResourceReader;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.handler.DirectoryHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.handler.MediaContentHandler;
+import com.aaizuss.handler.TextContentHandler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
-
 
 public class FileHandler implements Handler {
     private Directory directory;
@@ -26,9 +27,18 @@ public class FileHandler implements Handler {
                 return new Response(Status.NOT_FOUND);
             }
         } else if (directory.containsResource(request.getUri())) {
-            return new MediaContentHandler(directory).execute(request);
+            return responseForContentType(request);
         } else {
             return new Response(Status.NOT_FOUND);
+        }
+    }
+
+    private Response responseForContentType(Request request) {
+        String uri = request.getUri();
+        if (ResourceReader.getContentType(uri).contains("text")) {
+            return new TextContentHandler(directory).execute(request);
+        } else {
+            return new MediaContentHandler(directory).execute(request);
         }
     }
 

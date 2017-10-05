@@ -12,7 +12,6 @@ public class FormResource {
     }
 
     public String getData() {
-        System.out.println("data is " + data);
         return data;
     }
 }

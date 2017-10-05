@@ -12,7 +12,6 @@ public class FormHandler implements Handler {
     private FormResource resource;
 
     public FormHandler(FormResource resource) {
-        System.out.println("making a new resource with " + resource.getData());
         this.resource = resource;
     }
 
