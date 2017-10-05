@@ -14,12 +14,14 @@ public class CoffeeTeaHandler implements Handler {
         String uri = request.getUri();
         String method = request.getMethod();
         Response response = new Response();
+
         if (method.equals(RequestMethods.GET) && uri.equals(COFFEE_PATH)) {
             response.setStatus(Status.COFFEE_POT);
             response.setBody(TEAPOT_MESSAGE);
         } else if (method.equals(RequestMethods.GET) && uri.equals(TEA_PATH)) {
             response.setStatus(Status.OK);
         }
+
         return response;
     }
 }

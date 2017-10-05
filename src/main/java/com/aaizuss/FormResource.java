@@ -14,4 +14,16 @@ public class FormResource {
     public String getData() {
         return data;
     }
+
+    public void appendData(String newData) {
+        this.data = getData() + newData;
+    }
+
+    public void overwriteData(String newData) {
+        this.data = newData;
+    }
+
+    public void deleteData() {
+        this.data = "";
+    }
 }

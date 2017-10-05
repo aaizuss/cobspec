@@ -27,17 +27,22 @@ public class FormHandler implements Handler {
 
     private String getOrUpdateFormData(Request request) {
         String method = request.getMethod();
-        if (putOrPost(request)) {
-            resource = new FormResource(request.getBody());
+        if (isPut(request)) {
+            resource.appendData(request.getBody());
+        } else if (isPost(request)) {
+            resource.overwriteData(request.getBody());
         } else if (method.equals(RequestMethods.DELETE)) {
-            resource = new FormResource("");
+            resource.deleteData();
         }
         return resource.getData();
     }
 
-    private boolean putOrPost(Request request) {
-        String method = request.getMethod();
-        return method.equals(RequestMethods.POST) || method.equals(RequestMethods.PUT);
+    private boolean isPut(Request request) {
+        return request.getMethod().equals(RequestMethods.PUT);
+    }
+
+    private boolean isPost(Request request) {
+        return request.getMethod().equals(RequestMethods.POST);
     }
 
     private boolean supportedMethod(String method) {

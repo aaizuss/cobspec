@@ -2,6 +2,7 @@ package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
 import com.aaizuss.Header;
+import com.aaizuss.TestConstants;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -19,7 +20,7 @@ public class FileHandlerTest {
 
     @BeforeClass
     public static void setUp() throws DirectoryNotFoundException {
-        directory = new Directory(System.getProperty("user.dir") + "/public/");
+        directory = new Directory(TestConstants.PUBLIC_DIR);
         handler = new FileHandler(directory);
     }
 

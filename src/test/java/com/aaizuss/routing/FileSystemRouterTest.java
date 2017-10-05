@@ -1,9 +1,6 @@
 package com.aaizuss.routing;
 
-import com.aaizuss.Directory;
-import com.aaizuss.FormResource;
-import com.aaizuss.Header;
-import com.aaizuss.Status;
+import com.aaizuss.*;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.handler.FileHandler;
 import com.aaizuss.handler.FormHandler;
@@ -17,7 +14,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public class FileSystemRouterTest {
-    private static String ROOT = System.getProperty("user.dir") + "/test-directory/";
+    private static String ROOT = TestConstants.TEST_DIR;
     private FileSystemRouter router;
     private Request directoryRequest = new Request("GET", "/");
     private Directory directory;

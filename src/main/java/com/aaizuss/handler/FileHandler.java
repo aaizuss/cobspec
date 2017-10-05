@@ -4,10 +4,6 @@ import com.aaizuss.Directory;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.handler.DirectoryHandler;
-import com.aaizuss.handler.Handler;
-import com.aaizuss.handler.MediaContentHandler;
-import com.aaizuss.handler.TextContentHandler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 

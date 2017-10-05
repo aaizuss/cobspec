@@ -17,11 +17,17 @@ public class TextContentHandler implements Handler {
 
     public Response execute(Request request) {
         switch (request.getMethod()) {
-            case RequestMethods.GET: return get(request);
-            case RequestMethods.HEAD: return head(request);
-            case RequestMethods.POST: return post(request);
-            case RequestMethods.PUT: return post(request);
-            default: return new Response(Status.NOT_IMPLEMENTED);
+            case RequestMethods.GET:
+                return get(request);
+            case RequestMethods.HEAD:
+                return head(request);
+            case RequestMethods.POST:
+                return post(request);
+            case RequestMethods.PUT:
+                return post(request);
+            case RequestMethods.OPTIONS:
+                return options(request);
+            default: return new Response(Status.METHOD_NOT_ALLOWED);
         }
     }
 
@@ -53,8 +59,17 @@ public class TextContentHandler implements Handler {
         }
     }
 
+    private Response options(Request request) {
+        String methods = "GET,HEAD,POST,OPTIONS,PUT";
+        if (directory.containsResource(request.getUri())) {
+            methods = "GET,HEAD,OPTIONS";
+        }
+        Response response = new Response(Status.OK);
+        response.setHeader(Header.ALLOW, methods);
+        return response;
+    }
+
     private Response partialResponse (Request request) {
-        System.out.println("partial response!!!");
         Response response = new Response(Status.PARTIAL);
         response.setHeader(Header.CONTENT_RANGE, request.getHeader(Header.RANGE));
         response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));

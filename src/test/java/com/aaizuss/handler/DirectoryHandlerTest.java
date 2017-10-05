@@ -2,6 +2,7 @@ package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
 import com.aaizuss.Status;
+import com.aaizuss.TestConstants;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -13,14 +14,13 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class DirectoryHandlerTest {
-    private static String ROOT = System.getProperty("user.dir") + "/test-directory/";
     private Directory directory;
     private DirectoryHandler handler;
     private Request request = new Request("GET", "/");
 
     @Before
     public void setUp() throws DirectoryNotFoundException, IOException {
-        directory = new Directory(ROOT);
+        directory = new Directory(TestConstants.TEST_DIR);
         handler = new DirectoryHandler(directory);
     }
 
@@ -45,7 +45,7 @@ public class DirectoryHandlerTest {
 
     @Test
     public void testInnerDirectory() throws DirectoryNotFoundException {
-        Directory inner = new Directory(ROOT + "puppies");
+        Directory inner = new Directory(TestConstants.TEST_DIR + "puppies");
         handler = new DirectoryHandler(inner, directory);
         Response response = handler.execute(request);
         String expectedBody = "<a href='/'>< Back to Root</a></br>\r\n" +
