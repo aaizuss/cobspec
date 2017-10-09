@@ -16,7 +16,7 @@ public class Directory {
 
     public Directory(String directoryPath) throws DirectoryNotFoundException {
         checkDirectory(directoryPath);
-        this.pathString = directoryPath;
+        this.pathString = formatPathString(directoryPath);
         this.contents = initContents();
     }
 
@@ -79,7 +79,7 @@ public class Directory {
         return !name.startsWith(".");
     }
 
-    private String formatPathString(String pathString) {
+    private static String formatPathString(String pathString) {
         if (pathString.endsWith("/")) {
             return pathString;
         } else {
@@ -95,10 +95,12 @@ public class Directory {
     }
 
     public String getParentPathString(Directory rootDirectory) {
-        String rootDirectoryPathString = rootDirectory.getPathString();
+        String rootDirectoryPathString = formatPathString(rootDirectory.getPathString());
         File currentDirectory = new File(pathString);
         String parentPath = currentDirectory.getParent() + "/";
 
+        System.out.println("parentPath: " + parentPath);
+        System.out.println("root directory path string: " + rootDirectoryPathString);
         if (pathString.equals(rootDirectoryPathString)) {
             return "";
         } else if (parentPath.equals(rootDirectoryPathString)) {

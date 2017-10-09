@@ -2,7 +2,6 @@ package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
 import com.aaizuss.Header;
-import com.aaizuss.MockDirectory;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
@@ -11,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +23,23 @@ public class MediaContentHandlerTest {
 
     @Before
     public void setUp() throws IOException, DirectoryNotFoundException {
-        directory = MockDirectory.get();
+        File mockFolder = new File("mockFolder");
+        mockFolder.mkdir();
+        File pngFile = File.createTempFile("image", ".png", mockFolder);
+        File txtFile = File.createTempFile("text-file", ".txt", mockFolder);
+        File htmlFile = File.createTempFile("index", ".html", mockFolder);
+
+        FileWriter writer = new FileWriter(txtFile);
+        writer.write("I am a text file.");
+        writer.flush();
+        writer.close();
+
+        mockFolder.deleteOnExit();
+        pngFile.deleteOnExit();
+        txtFile.deleteOnExit();
+        htmlFile.deleteOnExit();
+
+        directory = new Directory(mockFolder.getAbsolutePath());
     }
 
     @Test

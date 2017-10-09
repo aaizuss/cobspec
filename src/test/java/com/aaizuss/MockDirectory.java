@@ -1,6 +1,8 @@
 package com.aaizuss;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,4 +28,5 @@ public class MockDirectory {
 
         return new Directory(mockFolder.getAbsolutePath());
     }
+
 }
