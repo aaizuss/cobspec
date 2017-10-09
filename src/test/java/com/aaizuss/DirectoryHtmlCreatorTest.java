@@ -2,38 +2,31 @@ package com.aaizuss;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
 public class DirectoryHtmlCreatorTest {
-    private DirectoryHtmlCreator htmlCreator;
-    private Directory rootDirectory;
-    private Directory funDirectory;
-    private Directory puppiesDirectory;
+    private static DirectoryHtmlCreator htmlCreator;
+    private static Directory rootDirectory;
+    private static Directory puppiesDirectory;
+    private static Directory journeyDirectory;
 
-    private void setUpPuppiesCreator() throws DirectoryNotFoundException {
+    @ClassRule
+    public static TemporaryFolder tempFolder = new TemporaryFolder();
+
+    @BeforeClass
+    public static void setUp() throws DirectoryNotFoundException, IOException {
+        TestDirectory.populate(tempFolder);
+        rootDirectory = new Directory(tempFolder.getRoot().getPath());
+        puppiesDirectory = new Directory(tempFolder.getRoot().getPath() + "/puppies/");
+        journeyDirectory = new Directory(tempFolder.getRoot().getPath() + "/journey/");
         htmlCreator = new DirectoryHtmlCreator(puppiesDirectory, rootDirectory);
-    }
-
-    private void makePuppiesDirectory() throws DirectoryNotFoundException {
-        puppiesDirectory = new Directory(TestConstants.TEST_DIR + "/puppies/");
-    }
-
-    private void makeFunDirectory() throws DirectoryNotFoundException {
-        funDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/");
-    }
-
-    private void makeRootDirectory() throws DirectoryNotFoundException {
-        rootDirectory= new Directory(TestConstants.USER_DIR + "/test-directory/");
-    }
-
-    @Before
-    public void setUp() throws DirectoryNotFoundException {
-        makePuppiesDirectory();
-        makeFunDirectory();
-        makeRootDirectory();
-        setUpPuppiesCreator();
     }
 
     @Test
@@ -47,7 +40,7 @@ public class DirectoryHtmlCreatorTest {
     @Test
     public void testGetLinkStringForRootDirectory() {
         String expected =
-                "<a href='/empty-folder'>empty-folder</a></br>\r\n" +
+                "<a href='/journey'>journey</a></br>\r\n" +
                         "<a href='/puppies'>puppies</a></br>\r\n" +
                         "<a href='/text-file.txt'>text-file.txt</a></br>\r\n";
         DirectoryHtmlCreator creator = new DirectoryHtmlCreator(rootDirectory, rootDirectory);
@@ -56,8 +49,7 @@ public class DirectoryHtmlCreatorTest {
 
     @Test
     public void testGetLinkStringNestedFolder() throws DirectoryNotFoundException {
-        Directory nestedDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/journey/");
-        DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(nestedDirectory, funDirectory);
+        DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(journeyDirectory, rootDirectory);
         String expected = "<a href='/'>< Back to Root</a></br>\r\n" +
                 "<a href='/journey/come'>come</a></br>\r\n";
         assertEquals(expected, funCreator.getLinkString());
@@ -65,8 +57,8 @@ public class DirectoryHtmlCreatorTest {
 
     @Test
     public void testGetLinkStringForNestedFolderInFunDirectory() throws DirectoryNotFoundException {
-        Directory nestedDirectory = new Directory(TestConstants.USER_DIR + "/fun-stuff/journey/come/inside/");
-        DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(nestedDirectory, funDirectory);
+        Directory nestedDirectory = new Directory(journeyDirectory.getPathString() + "come/inside/");
+        DirectoryHtmlCreator funCreator = new DirectoryHtmlCreator(nestedDirectory, rootDirectory);
         String expected = "<a href='/journey/come/inside/..'>< Back</a></br>\r\n" +
                 "<a href='/journey/come/inside/and-find'>and-find</a></br>\r\n";
         assertEquals(expected, funCreator.getLinkString());

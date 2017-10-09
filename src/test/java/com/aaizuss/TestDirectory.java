@@ -9,6 +9,17 @@ public class TestDirectory {
     public static void populate(TemporaryFolder folder) {
         try {
             folder.newFile("text-file.txt");
+            folder.newFolder("journey", "come", "inside", "and-find", "a-surprise", "thanks.txt");
+            folder.newFolder("puppies", "pup1.jpg");
+            folder.newFolder("puppies", "broccoli.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void populateFunStuff(TemporaryFolder folder) {
+        try {
+            folder.newFile("text-file.txt");
             folder.newFolder("empty-folder");
             folder.newFolder("puppies", "pup1.jpg");
             folder.newFolder("puppies", "broccoli.png");

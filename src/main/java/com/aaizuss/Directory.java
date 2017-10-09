@@ -99,8 +99,6 @@ public class Directory {
         File currentDirectory = new File(pathString);
         String parentPath = currentDirectory.getParent() + "/";
 
-        System.out.println("parentPath: " + parentPath);
-        System.out.println("root directory path string: " + rootDirectoryPathString);
         if (pathString.equals(rootDirectoryPathString)) {
             return "";
         } else if (parentPath.equals(rootDirectoryPathString)) {

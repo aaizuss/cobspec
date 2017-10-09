@@ -40,7 +40,7 @@ public class DirectoryTest {
     @Test
     public void testGetContents() {
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("empty-folder");
+        expected.add("journey");
         expected.add("puppies");
         expected.add("text-file.txt");
         assertEquals(expected, directory.getContents());
