@@ -2,7 +2,9 @@ package com.aaizuss;
 
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class TestDirectory {
 
@@ -17,16 +19,15 @@ public class TestDirectory {
         }
     }
 
-    public static void populateFunStuff(TemporaryFolder folder) {
+    public static void populateForTextContentTests(TemporaryFolder folder) {
         try {
-            folder.newFile("text-file.txt");
-            folder.newFolder("empty-folder");
-            folder.newFolder("puppies", "pup1.jpg");
-            folder.newFolder("puppies", "broccoli.png");
+            writeTempTextFile(folder);
+            folder.newFile("file1");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private static void populateWithEmptyFiles(TemporaryFolder folder, String[] names) {
         for (String name : names) {
@@ -35,6 +36,17 @@ public class TestDirectory {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static void writeTempTextFile(TemporaryFolder folder) throws IOException {
+        File file = folder.newFile("partial_content.txt");
+        try{
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
+            writer.println("This is a file that contains text to read part of in order to fulfill a 206.");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
