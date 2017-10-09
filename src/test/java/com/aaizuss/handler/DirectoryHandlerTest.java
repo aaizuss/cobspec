@@ -2,32 +2,36 @@ package com.aaizuss.handler;
 
 import com.aaizuss.Directory;
 import com.aaizuss.Status;
-import com.aaizuss.TestConstants;
+import com.aaizuss.TestDirectory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
 public class DirectoryHandlerTest {
-    private Directory directory;
-    private DirectoryHandler handler;
+    private static Directory directory;
+    private static DirectoryHandler handler;
     private Request request = new Request("GET", "/");
 
-    @Before
-    public void setUp() throws DirectoryNotFoundException, IOException {
-        directory = new Directory(TestConstants.TEST_DIR);
+    @ClassRule
+    public static TemporaryFolder tempFolder = new TemporaryFolder();
+
+    @BeforeClass
+    public static void setUp() throws DirectoryNotFoundException, IOException {
+        TestDirectory.populate(tempFolder);
+        directory = new Directory(tempFolder.getRoot().getPath());
         handler = new DirectoryHandler(directory);
     }
 
     @Test
     public void testDirectoryResponse() {
         Response response = handler.execute(request);
-        String expectedBody = "<a href='/empty-folder'>empty-folder</a></br>\r\n" +
+        String expectedBody = "<a href='/journey'>journey</a></br>\r\n" +
                 "<a href='/puppies'>puppies</a></br>\r\n" +
                 "<a href='/text-file.txt'>text-file.txt</a></br>\r\n";
         assertEquals(Status.OK, response.getStatus());
@@ -45,7 +49,7 @@ public class DirectoryHandlerTest {
 
     @Test
     public void testInnerDirectory() throws DirectoryNotFoundException {
-        Directory inner = new Directory(TestConstants.TEST_DIR + "puppies");
+        Directory inner = new Directory(tempFolder.getRoot().getPath() + "/puppies");
         handler = new DirectoryHandler(inner, directory);
         Response response = handler.execute(request);
         String expectedBody = "<a href='/'>< Back to Root</a></br>\r\n" +

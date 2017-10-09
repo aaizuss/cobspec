@@ -31,8 +31,7 @@ public class FileSystemRouter extends Router {
         Handler handler = super.getHandler(request);
         if (handler == null && resourceRoutes.containsKey(request.getUri())) {
             return getResourceHandler(request);
-        }
-        else if (handler == null) {
+        } else if (handler == null) {
             return new FileHandler(directory);
         } else {
             return handler;

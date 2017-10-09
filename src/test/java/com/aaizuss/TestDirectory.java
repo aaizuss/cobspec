@@ -13,6 +13,8 @@ public class TestDirectory {
             folder.newFile("text-file.txt");
             folder.newFolder("journey", "come", "inside", "and-find", "a-surprise", "thanks.txt");
             folder.newFolder("puppies", "pup1.jpg");
+            // note: unfortunately, broccoli.png ends up being a folder, so i can't use this to test
+            // that broccoli.png is recognized as an image
             folder.newFolder("puppies", "broccoli.png");
         } catch (IOException e) {
             e.printStackTrace();

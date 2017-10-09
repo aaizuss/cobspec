@@ -2,7 +2,9 @@ package com.aaizuss;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
@@ -12,9 +14,13 @@ import static org.junit.Assert.assertTrue;
 public class FileResourceWriterTest {
     private static Directory directory;
 
+    @ClassRule
+    public static TemporaryFolder tempFolder = new TemporaryFolder();
+
     @BeforeClass
     public static void setUp() throws DirectoryNotFoundException {
-        directory = new Directory(TestConstants.TEST_DIR);
+        TestDirectory.populate(tempFolder);
+        directory = new Directory(tempFolder.getRoot().getPath());
     }
 
     @Test

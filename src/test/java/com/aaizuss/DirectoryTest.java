@@ -32,8 +32,7 @@ public class DirectoryTest {
 
     @Test
     public void testDirectoryConstructorWithArgument() throws DirectoryNotFoundException {
-        Directory directory = new Directory(TestConstants.TEST_DIR);
-        String expected =  System.getProperty("user.dir") + "/test-directory/";
+        String expected = testDirectory.getRoot().getPath() + "/";
         assertEquals(expected, directory.getPathString());
     }
 

@@ -21,7 +21,7 @@ public class Directory {
     }
 
     public String getPathString() {
-        return pathString;
+        return formatPathString(pathString);
     }
 
     public ArrayList<String> getContents() {
@@ -98,6 +98,7 @@ public class Directory {
         String rootDirectoryPathString = formatPathString(rootDirectory.getPathString());
         File currentDirectory = new File(pathString);
         String parentPath = currentDirectory.getParent() + "/";
+
 
         if (pathString.equals(rootDirectoryPathString)) {
             return "";

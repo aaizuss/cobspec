@@ -8,20 +8,30 @@ import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public class FileSystemRouterTest {
-    private static String ROOT = TestConstants.TEST_DIR;
-    private FileSystemRouter router;
+    private static FileSystemRouter router;
     private Request directoryRequest = new Request("GET", "/");
-    private Directory directory;
+    private static Directory directory;
+
+    @ClassRule
+    public static TemporaryFolder tempFolder = new TemporaryFolder();
+
+    @BeforeClass
+    public static void onlyOnce() throws DirectoryNotFoundException {
+        TestDirectory.populate(tempFolder);
+        directory = new Directory(tempFolder.getRoot().getPath());
+    }
 
     @Before
-    public void setUp() throws DirectoryNotFoundException {
-        directory = new Directory(ROOT);
+    public void setUp() {
         router = new FileSystemRouter(directory);
     }
 
@@ -55,7 +65,6 @@ public class FileSystemRouterTest {
         Response response = router.getResponse(puppy);
 
         assertEquals(Status.OK, response.getStatus());
-        assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
     }
 
     @Test
