@@ -63,15 +63,6 @@ public class DirectoryTest {
         assertEquals(path, directory.getPathToResource(requestPath));
     }
 
-
-//    @Test
-//    public void testGetParentPathRestrictions() throws DirectoryNotFoundException{
-//        Directory inner = new Directory(testDirectory.getRoot().getPath() + "/puppies/");
-//
-//        assertEquals("", directory.getParentPathString(directory));
-//        assertEquals("/", inner.getParentPathString(directory));
-//    }
-
     @Test
     public void testGetResourceName() {
         assertEquals("pup1.jpg", directory.getResourceName("/puppies/pup1.jpg"));

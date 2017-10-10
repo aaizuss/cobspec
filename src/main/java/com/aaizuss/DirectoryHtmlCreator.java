@@ -36,18 +36,6 @@ public class DirectoryHtmlCreator {
         return links;
     }
 
-    private String getParentLink() {
-        if (parentPath.equals(NO_PARENT)) {
-            return NO_PARENT;
-        } else if (parentPath.equals(ROOT)) {
-            String displayText = BACK_ROOT;
-            return buildHTML(displayText, parentPath);
-        } else {
-            String displayText = BACK;
-            return buildHTML(displayText, parentPath);
-        }
-    }
-
     private String buildHTML(String displayName, String target) {
         String href = hrefFormat(target);
         return "<a href='" + href + "'>" + displayName + "</a></br>\r\n";
@@ -89,6 +77,18 @@ public class DirectoryHtmlCreator {
     public String linkToResource(DataStore currentDirectory, String rootDirectory, String uri) {
         String path = currentDirectory.getPathToResource(uri);
         return pathDifference(rootDirectory, path);
+    }
+
+    private String getParentLink() {
+        if (parentPath.equals(NO_PARENT)) {
+            return NO_PARENT;
+        } else if (parentPath.equals(ROOT)) {
+            String displayText = BACK_ROOT;
+            return buildHTML(displayText, parentPath);
+        } else {
+            String displayText = BACK;
+            return buildHTML(displayText, parentPath);
+        }
     }
 
     private static String formatPathString(String pathString) {
