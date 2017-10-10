@@ -1,7 +1,7 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Header;
-import com.aaizuss.Status;
+import com.aaizuss.http.Header;
+import com.aaizuss.http.Status;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;

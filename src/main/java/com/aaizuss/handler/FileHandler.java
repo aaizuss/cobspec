@@ -2,7 +2,7 @@ package com.aaizuss.handler;
 
 import com.aaizuss.datastore.Directory;
 import com.aaizuss.ResourceReader;
-import com.aaizuss.Status;
+import com.aaizuss.http.Status;
 import com.aaizuss.datastore.DataStore;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;

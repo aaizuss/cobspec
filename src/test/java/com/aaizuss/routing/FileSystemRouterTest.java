@@ -11,6 +11,7 @@ import com.aaizuss.handler.FormHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
+import com.aaizuss.http.Status;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -34,22 +35,6 @@ public class FileSystemRouterTest {
     public void setUp() {
         router = new FileSystemRouter(directory);
     }
-
-    @Test
-    public void testGetHandlerForValidDirectoryRequest() {
-        Handler handler = router.getHandler(directoryRequest);
-
-        assertTrue(handler instanceof FileHandler);
-    }
-
-    @Test
-    public void testGetHandlerForInvalidDirectoryRequestReturnsFileHandler() {
-        Request invalidDirectoryRequest = new Request("GET","/foo");
-        Handler handler = router.getHandler(invalidDirectoryRequest);
-
-        assertTrue(handler instanceof FileHandler);
-    }
-
 
     @Test
     public void testGetResponseForInvalidDirectoryRequest() {
