@@ -1,4 +1,4 @@
-package com.aaizuss;
+package com.aaizuss.datastore;
 
 import org.junit.rules.TemporaryFolder;
 

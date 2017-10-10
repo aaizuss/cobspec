@@ -1,17 +1,17 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Directory;
 import com.aaizuss.Header;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.Status;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;
 
 public class MediaContentHandler implements Handler {
-    private Directory directory;
+    private DataStore directory;
 
-    public MediaContentHandler(Directory directory) {
+    public MediaContentHandler(DataStore directory) {
         this.directory = directory;
     }
 

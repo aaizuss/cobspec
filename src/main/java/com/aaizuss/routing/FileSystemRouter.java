@@ -1,8 +1,8 @@
 package com.aaizuss.routing;
 
-import com.aaizuss.Directory;
 import com.aaizuss.Router;
 import com.aaizuss.Status;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.handler.FileHandler;
 import com.aaizuss.handler.Handler;
 import com.aaizuss.http.Request;
@@ -11,16 +11,16 @@ import com.aaizuss.http.Response;
 import java.util.Hashtable;
 
 public class FileSystemRouter extends Router {
-    private Directory directory;
+    private DataStore directory;
     private Hashtable<String, Handler> resourceRoutes;
 
-    public FileSystemRouter(Directory directory) {
+    public FileSystemRouter(DataStore directory) {
         super();
         this.directory = directory;
         this.resourceRoutes = new Hashtable<>();
     }
 
-    public FileSystemRouter(Directory directory, Hashtable<String,Handler> routes) {
+    public FileSystemRouter(DataStore directory, Hashtable<String,Handler> routes) {
         super(routes);
         this.directory = directory;
     }

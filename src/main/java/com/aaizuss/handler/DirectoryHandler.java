@@ -1,8 +1,8 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Directory;
 import com.aaizuss.DirectoryHtmlCreator;
 import com.aaizuss.Status;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;
@@ -10,11 +10,11 @@ import com.aaizuss.http.Response;
 public class DirectoryHandler implements Handler {
     private DirectoryHtmlCreator htmlCreator;
 
-    public DirectoryHandler(Directory rootDirectory) {
+    public DirectoryHandler(DataStore rootDirectory) {
         this.htmlCreator = new DirectoryHtmlCreator(rootDirectory);
     }
 
-    public DirectoryHandler(Directory directory, Directory serverRootDirectory) {
+    public DirectoryHandler(DataStore directory, DataStore serverRootDirectory) {
         this.htmlCreator = new DirectoryHtmlCreator(directory, serverRootDirectory);
     }
 

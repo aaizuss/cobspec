@@ -1,16 +1,17 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Directory;
+import com.aaizuss.datastore.Directory;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.Status;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 
 public class FileHandler implements Handler {
-    private Directory directory;
+    private DataStore directory;
 
-    public FileHandler(Directory directory) {
+    public FileHandler(DataStore directory) {
         this.directory = directory;
     }
 

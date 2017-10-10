@@ -1,7 +1,7 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Directory;
-import com.aaizuss.TestDirectory;
+import com.aaizuss.datastore.Directory;
+import com.aaizuss.datastore.TestDirectory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;

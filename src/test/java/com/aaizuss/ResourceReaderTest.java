@@ -1,5 +1,6 @@
 package com.aaizuss;
 
+import com.aaizuss.datastore.Directory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;

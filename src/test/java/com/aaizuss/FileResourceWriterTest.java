@@ -1,5 +1,7 @@
 package com.aaizuss;
 
+import com.aaizuss.datastore.Directory;
+import com.aaizuss.datastore.TestDirectory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;

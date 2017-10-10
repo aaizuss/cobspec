@@ -1,6 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Directory;
+import com.aaizuss.datastore.Directory;
 import com.aaizuss.Header;
 import com.aaizuss.Status;
 import com.aaizuss.exception.DirectoryNotFoundException;
