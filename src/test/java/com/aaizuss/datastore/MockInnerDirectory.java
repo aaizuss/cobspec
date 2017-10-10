@@ -1,13 +1,17 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.datastore.DataStore;
-
 import java.util.ArrayList;
 
 public class MockInnerDirectory implements DataStore {
 
     public boolean containsResource(String identifier) {
-        return true;
+        ArrayList<String> contents = getContents();
+        for (String item : contents) {
+            if (identifier.contains(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<String> getContents() {
@@ -18,10 +22,11 @@ public class MockInnerDirectory implements DataStore {
     }
 
     public String getPathString() {
+        System.out.println("inner path is /test-directory/puppies/");
         return "/test-directory/puppies/";
     }
 
     public String getPathToResource(String uri) {
-        return uri;
+        return getPathString() + uri;
     }
 }

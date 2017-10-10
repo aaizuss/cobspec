@@ -1,13 +1,5 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.datastore.DataStore;
-import com.aaizuss.exception.DirectoryNotFoundException;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MockRootDirectory implements DataStore {
@@ -17,15 +9,21 @@ public class MockRootDirectory implements DataStore {
     }
 
     public boolean containsResource(String identifier) {
-        return true;
+        ArrayList<String> contents = getContents();
+        for (String item : contents) {
+            if (identifier.contains(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public ArrayList<String> getContents() {
         ArrayList<String> contents = new ArrayList<>();
-        contents.add("text-file.txt");
         contents.add("journey");
         contents.add("puppies");
+        contents.add("text-file.txt");
         return contents;
     }
 
@@ -33,23 +31,4 @@ public class MockRootDirectory implements DataStore {
         return uri;
     }
 
-//    public static Directory get() throws IOException, DirectoryNotFoundException {
-//        File mockFolder = new File("mockFolder");
-//        mockFolder.mkdir();
-//        File pngFile = File.createTempFile("image", ".png", mockFolder);
-//        File txtFile = File.createTempFile("text-file", ".txt", mockFolder);
-//        File htmlFile = File.createTempFile("index", ".html", mockFolder);
-//
-//        FileWriter writer = new FileWriter(txtFile);
-//        writer.write("I am a text file.");
-//        writer.flush();
-//        writer.close();
-//
-//        mockFolder.deleteOnExit();
-//        pngFile.deleteOnExit();
-//        txtFile.deleteOnExit();
-//        htmlFile.deleteOnExit();
-//
-//        return new Directory(mockFolder.getAbsolutePath());
-//    }
 }

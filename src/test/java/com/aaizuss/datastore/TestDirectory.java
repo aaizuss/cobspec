@@ -30,17 +30,6 @@ public class TestDirectory {
         }
     }
 
-
-    private static void populateWithEmptyFiles(TemporaryFolder folder, String[] names) {
-        for (String name : names) {
-            try {
-                folder.newFile(name);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private static void writeTempTextFile(TemporaryFolder folder) throws IOException {
         File file = folder.newFile("partial_content.txt");
         try{

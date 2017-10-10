@@ -1,6 +1,5 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.datastore.DataStore;
 import com.aaizuss.exception.DirectoryNotFoundException;
 
 import java.io.File;

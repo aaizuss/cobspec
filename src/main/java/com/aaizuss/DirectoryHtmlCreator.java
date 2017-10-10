@@ -74,8 +74,7 @@ public class DirectoryHtmlCreator {
         String pathString = currentDirectory.getPathString();
         String rootDirectoryPathString = formatPathString(rootDirectory.getPathString());
         File currentDirectoryFile = new File(pathString);
-        String parentPath = currentDirectoryFile.getParent() + "/";
-
+        String parentPath = formatPathString(currentDirectoryFile.getParent());
 
         if (pathString.equals(rootDirectoryPathString)) {
             return "";

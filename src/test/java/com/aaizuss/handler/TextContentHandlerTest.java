@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
+// todo: figure out how to not rely on temporary files...
 public class TextContentHandlerTest {
 
     private static Directory directory;

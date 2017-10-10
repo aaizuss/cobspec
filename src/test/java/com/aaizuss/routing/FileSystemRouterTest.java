@@ -1,7 +1,9 @@
 package com.aaizuss.routing;
 
 import com.aaizuss.*;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.datastore.Directory;
+import com.aaizuss.datastore.MockRootDirectory;
 import com.aaizuss.datastore.TestDirectory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.handler.FileHandler;
@@ -21,15 +23,11 @@ import static junit.framework.TestCase.assertTrue;
 public class FileSystemRouterTest {
     private static FileSystemRouter router;
     private Request directoryRequest = new Request("GET", "/");
-    private static Directory directory;
-
-    @ClassRule
-    public static TemporaryFolder tempFolder = new TemporaryFolder();
+    private static DataStore directory;
 
     @BeforeClass
-    public static void onlyOnce() throws DirectoryNotFoundException {
-        TestDirectory.populate(tempFolder);
-        directory = new Directory(tempFolder.getRoot().getPath());
+    public static void onlyOnce() {
+        directory = new MockRootDirectory();
     }
 
     @Before
