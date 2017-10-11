@@ -22,7 +22,6 @@ public class MockInnerDirectory implements DataStore {
     }
 
     public String getPathString() {
-        System.out.println("inner path is /test-directory/puppies/");
         return "/test-directory/puppies/";
     }
 

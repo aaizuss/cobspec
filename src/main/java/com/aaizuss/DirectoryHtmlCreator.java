@@ -13,7 +13,6 @@ public class DirectoryHtmlCreator {
     private static String SEPARATOR = "/";
     private static String NO_PARENT = "";
     private static String BACK = "< Back";
-    private static String BACK_ROOT = "< Back to Root";
 
     public DirectoryHtmlCreator(DataStore rootDirectory) {
         this.currentDirectory = rootDirectory;
@@ -65,9 +64,9 @@ public class DirectoryHtmlCreator {
         String parentPath = currentDirectoryFile.getParent() + "/";
 
         if (pathString.equals(rootDirectoryPathString)) {
-            return "";
+            return NO_PARENT;
         } else if (parentPath.equals(rootDirectoryPathString)) {
-            return "/";
+            return ROOT;
         } else {
             String fullParent = formatPathString(pathString) + "..";
             return pathDifference(rootDirectoryPathString, fullParent);
@@ -82,9 +81,6 @@ public class DirectoryHtmlCreator {
     private String getParentLink() {
         if (parentPath.equals(NO_PARENT)) {
             return NO_PARENT;
-        } else if (parentPath.equals(ROOT)) {
-            String displayText = BACK_ROOT;
-            return buildHTML(displayText, parentPath);
         } else {
             String displayText = BACK;
             return buildHTML(displayText, parentPath);
