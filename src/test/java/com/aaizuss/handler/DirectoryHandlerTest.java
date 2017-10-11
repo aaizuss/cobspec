@@ -41,16 +41,15 @@ public class DirectoryHandlerTest {
         assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
     }
 
-    @Test
+        @Test
     public void testInnerDirectory() throws DirectoryNotFoundException {
         DataStore inner = new MockInnerDirectory();
         handler = new DirectoryHandler(inner, directory);
         Response response = handler.execute(request);
-        String expectedBody = "<a href='/'>< Back</a></br>\r\n" +
+        String expectedBody = "<a href='/puppies/..'>< Back</a></br>\r\n" +
                 "<a href='/puppies/broccoli.png'>broccoli.png</a></br>\r\n" +
                 "<a href='/puppies/pup1.jpg'>pup1.jpg</a></br>\r\n";
         assertEquals(Status.OK, response.getStatus());
         assertEquals(expectedBody, new String(response.getBody()));
-
     }
 }

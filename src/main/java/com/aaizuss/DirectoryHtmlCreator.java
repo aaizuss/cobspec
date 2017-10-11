@@ -60,13 +60,9 @@ public class DirectoryHtmlCreator {
     private String getParentPathString(DataStore currentDirectory, DataStore rootDirectory) {
         String pathString = currentDirectory.getPathString();
         String rootDirectoryPathString = formatPathString(rootDirectory.getPathString());
-        File currentDirectoryFile = new File(pathString);
-        String parentPath = currentDirectoryFile.getParent() + "/";
 
         if (pathString.equals(rootDirectoryPathString)) {
             return NO_PARENT;
-        } else if (parentPath.equals(rootDirectoryPathString)) {
-            return ROOT;
         } else {
             String fullParent = formatPathString(pathString) + "..";
             return pathDifference(rootDirectoryPathString, fullParent);

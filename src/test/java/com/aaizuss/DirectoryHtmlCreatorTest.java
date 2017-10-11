@@ -23,7 +23,7 @@ public class DirectoryHtmlCreatorTest {
 
     @Test
     public void testGetLinkStringForInnerDirectory() {
-        String expected = "<a href='/'>< Back</a></br>\r\n" +
+        String expected = "<a href='/puppies/..'>< Back</a></br>\r\n" +
                 "<a href='/puppies/broccoli.png'>broccoli.png</a></br>\r\n" +
                 "<a href='/puppies/pup1.jpg'>pup1.jpg</a></br>\r\n";
         assertEquals(expected, htmlCreator.getLinkString());
