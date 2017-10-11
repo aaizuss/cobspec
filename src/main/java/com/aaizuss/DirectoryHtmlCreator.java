@@ -2,14 +2,11 @@ package com.aaizuss;
 
 import com.aaizuss.datastore.DataStore;
 
-import java.io.File;
-
 public class DirectoryHtmlCreator {
     private DataStore currentDirectory;
     private DataStore rootDirectory;
     private String parentPath;
 
-    private static String ROOT = "/";
     private static String SEPARATOR = "/";
     private static String NO_PARENT = "";
     private static String BACK = "< Back";
