@@ -1,14 +1,17 @@
 package com.aaizuss.handler;
 
 import com.aaizuss.*;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.encoder.ShaEncoder;
+import com.aaizuss.http.Header;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
+import com.aaizuss.http.Status;
 
 public class PatchHandler implements Handler {
-    private Directory directory;
+    private DataStore directory;
 
-    public PatchHandler(Directory directory) {
+    public PatchHandler(DataStore directory) {
         this.directory = directory;
     }
 

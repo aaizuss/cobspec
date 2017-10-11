@@ -1,5 +1,6 @@
 package com.aaizuss;
 
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.http.ContentRange;
 
 import java.io.File;
@@ -14,12 +15,12 @@ public class ResourceReader {
         return typesMap.getOrDefault(extension, "application/octet-stream");
     }
 
-    public static byte[] getContent(String uri, Directory directory) {
+    public static byte[] getContent(String uri, DataStore directory) {
         String filepath = directory.getPathToResource(uri);
         return getContent(filepath);
     }
 
-    public static byte[] getPartialContent(String uri, Directory directory, Hashtable<String,Integer> range) {
+    public static byte[] getPartialContent(String uri, DataStore directory, Hashtable<String,Integer> range) {
         String filepath = directory.getPathToResource(uri);
         int contentLength = getContentLength(filepath);
         int[] contentRange = ContentRange.getRange(range, contentLength);

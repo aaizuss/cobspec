@@ -1,11 +1,11 @@
-package com.aaizuss;
+package com.aaizuss.datastore;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class Directory {
+public class Directory implements DataStore {
     private String pathString;
     private ArrayList<String> contents = new ArrayList<>();
 
@@ -16,12 +16,12 @@ public class Directory {
 
     public Directory(String directoryPath) throws DirectoryNotFoundException {
         checkDirectory(directoryPath);
-        this.pathString = directoryPath;
+        this.pathString = formatPathString(directoryPath);
         this.contents = initContents();
     }
 
     public String getPathString() {
-        return pathString;
+        return formatPathString(pathString);
     }
 
     public ArrayList<String> getContents() {
@@ -40,14 +40,13 @@ public class Directory {
         return file.exists();
     }
 
+    // this is used by FileResourceWriter to figure out where to write
+    // thinking about changing the interface to require
+    // a method that returns a way to write to a resource more broadly
+    // and connects to other classes
     public String getPathToResource(String uri) {
         File file = convertRequestPathToFile(uri);
         return file.getPath();
-    }
-
-    public String linkToResource(String rootDirectory, String uri) {
-        String path = getPathToResource(uri);
-        return pathDifference(rootDirectory, path);
     }
 
     public String getResourceName(String uri) {
@@ -79,7 +78,7 @@ public class Directory {
         return !name.startsWith(".");
     }
 
-    private String formatPathString(String pathString) {
+    private static String formatPathString(String pathString) {
         if (pathString.endsWith("/")) {
             return pathString;
         } else {
@@ -92,53 +91,5 @@ public class Directory {
         if (!file.exists()) {
             throw new DirectoryNotFoundException(directoryPath);
         }
-    }
-
-    public String getParentPathString(Directory rootDirectory) {
-        String rootDirectoryPathString = rootDirectory.getPathString();
-        File currentDirectory = new File(pathString);
-        String parentPath = currentDirectory.getParent() + "/";
-
-        if (pathString.equals(rootDirectoryPathString)) {
-            return "";
-        } else if (parentPath.equals(rootDirectoryPathString)) {
-            return "/";
-        } else {
-            String fullParent = formatPathString(pathString) + "..";
-            return pathDifference(rootDirectoryPathString, fullParent);
-        }
-    }
-
-    private static String pathDifference(String rootDirectory, String path) {
-        if (rootDirectory == null) {
-            return path;
-        }
-        if (path == null) {
-            return rootDirectory;
-        }
-        int at = indexOfDifference(rootDirectory, path);
-        if (at == -1) {
-            return "";
-        }
-        return path.substring(at);
-    }
-
-    private static int indexOfDifference(CharSequence cs1, CharSequence cs2) {
-        if (cs1 == cs2) {
-            return -1;
-        }
-        if (cs1 == null || cs2 == null) {
-            return 0;
-        }
-        int i;
-        for (i = 0; i < cs1.length() && i < cs2.length(); ++i) {
-            if (cs1.charAt(i) != cs2.charAt(i)) {
-                break;
-            }
-        }
-        if (i < cs2.length() || i < cs1.length()) {
-            return i;
-        }
-        return -1;
     }
 }

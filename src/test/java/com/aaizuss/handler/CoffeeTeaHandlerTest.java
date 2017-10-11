@@ -1,6 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Status;
+import com.aaizuss.http.Status;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 import org.junit.Test;

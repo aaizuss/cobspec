@@ -1,18 +1,20 @@
 package com.aaizuss;
 
+import com.aaizuss.datastore.DataStore;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileResourceWriter {
 
-    public static void updateResource(String uri, Directory directory, String content, boolean append) {
+    public static void updateResource(String uri, DataStore directory, String content, boolean append) {
         String path = directory.getPathToResource(uri);
         File resource = createResource(path);
         writeToResource(resource, content, append);
     }
 
-    public static void deleteDataFromResource(String uri, Directory directory) {
+    public static void deleteDataFromResource(String uri, DataStore directory) {
         File resource = createResource(directory.getPathToResource(uri));
         writeToResource(resource, "", false);
     }

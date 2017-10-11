@@ -1,6 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.Header;
+import com.aaizuss.http.Header;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 import org.junit.Test;
