@@ -24,7 +24,7 @@ public class CookieHandlerTest {
     @Test
     public void testUsesCookieInResponse() {
         request = new Request(RequestMethods.GET, "/eat_cookie");
-        request.addHeader(Header.COOKIE, "type=sugar;other=stuff;perhaps=iguess");
+        request.addHeader(Header.COOKIE, "type=sugar; other=stuff; perhaps=iguess");
         response = handler.execute(request);
 
         assertEquals(Status.OK, response.getStatus());

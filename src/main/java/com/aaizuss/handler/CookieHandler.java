@@ -1,11 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.CookieParser;
-import com.aaizuss.InvalidCookieException;
-import com.aaizuss.http.Header;
-import com.aaizuss.http.Request;
-import com.aaizuss.http.Response;
-import com.aaizuss.http.Status;
+import com.aaizuss.http.*;
 
 public class CookieHandler implements Handler{
 
