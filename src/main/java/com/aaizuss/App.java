@@ -37,7 +37,6 @@ public class App {
         } catch (DirectoryNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("making standard router");
         return new Router();
     }
 

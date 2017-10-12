@@ -16,6 +16,7 @@ public class ResourceReader {
     }
 
     public static byte[] getContent(String uri, DataStore directory) {
+
         String filepath = directory.getPathToResource(uri);
         return getContent(filepath);
     }
@@ -40,7 +41,9 @@ public class ResourceReader {
 
     private static final Hashtable<String,String> typesMap = createTypesMap();
     private static Hashtable<String,String> createTypesMap() {
+
         Hashtable<String,String> typesMap = new Hashtable<>();
+
         typesMap.put("txt", "text/plain");
         typesMap.put("html", "text/html");
         typesMap.put("png", "image/png");

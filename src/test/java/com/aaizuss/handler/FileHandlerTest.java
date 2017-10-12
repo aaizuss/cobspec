@@ -6,6 +6,7 @@ import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 
+import com.aaizuss.http.Status;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+// FileSystemRouterTest tests FileHandler better
 public class FileHandlerTest {
 
     private static Directory directory;
@@ -37,6 +39,13 @@ public class FileHandlerTest {
         // this is a dumb test but i don't have a way to test the kind of handler
         // because of the way the function is written
         assertTrue(content.contains("text-file.txt"));
+    }
+
+    @Test
+    public void testUsesReturnsNotFoundForFileNotInDirectory() {
+        Request request = new Request("GET", "/foo");
+        Response response = handler.execute(request);
+        assertEquals(Status.NOT_FOUND, response.getStatus());
     }
 
 }

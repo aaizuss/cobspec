@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.assertFalse;
 
 public class FileSystemRouterTest {
     private static FileSystemRouter router;
@@ -54,12 +54,10 @@ public class FileSystemRouterTest {
         assertEquals(Status.OK, response.getStatus());
     }
 
-//    @Test
-//    public void testResourceRoutes() {
-//        router.addResourceRoute("/form", new FormHandler(new FormResource()));
-//        Request request = new Request("GET","/form");
-//        Handler handler = router.getHandler(request);
-//
-//        assertTrue(handler instanceof FormHandler);
-//    }
+    @Test
+    public void testResourceRoutes() {
+        router.addResourceRoute("/form", new FormHandler(new FormResource()));
+        Request request = new Request("GET","/form");
+        assertFalse(router.getResponse(request).getStatus().equals(Status.NOT_FOUND));
+    }
 }
