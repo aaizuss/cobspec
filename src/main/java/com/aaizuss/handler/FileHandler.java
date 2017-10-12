@@ -17,12 +17,7 @@ public class FileHandler implements Handler {
 
     public Response execute(Request request) {
         if (canServeDirectory(request)) {
-            try {
-                return setupDirectoryHandler(request).execute(request);
-            } catch (DirectoryNotFoundException e) {
-                e.printStackTrace();
-                return new Response(Status.NOT_FOUND);
-            }
+            return responseForDirectoryRequest(request);
         } else if (directory.containsResource(request.getUri())) {
             return responseForContentType(request);
         } else {
@@ -36,6 +31,15 @@ public class FileHandler implements Handler {
             return new TextContentHandler(directory).execute(request);
         } else {
             return new MediaContentHandler(directory).execute(request);
+        }
+    }
+
+    private Response responseForDirectoryRequest(Request request) {
+        try {
+            return setupDirectoryHandler(request).execute(request);
+        } catch (DirectoryNotFoundException e) {
+            e.printStackTrace();
+            return new Response(Status.NOT_FOUND);
         }
     }
 
