@@ -33,6 +33,8 @@ public class App {
             router.addRoute(RequestMethods.GET, "/redirect", new RedirectHandler());
             router.addRoute(RequestMethods.GET, "/coffee", new CoffeeTeaHandler());
             router.addRoute(RequestMethods.GET, "/tea", new CoffeeTeaHandler());
+            router.addRoute(RequestMethods.GET, "/cookie", new CookieHandler());
+            router.addRoute(RequestMethods.GET, "/eat_cookie", new CookieHandler());
             return router;
         } catch (DirectoryNotFoundException e) {
             e.printStackTrace();

@@ -16,7 +16,6 @@ public class ResourceReader {
     }
 
     public static byte[] getContent(String uri, DataStore directory) {
-
         String filepath = directory.getPathToResource(uri);
         return getContent(filepath);
     }

@@ -66,7 +66,7 @@ public class PatchHandlerTest {
     @Test
     public void testResponseStatusWhenNoMatch() {
         request.addHeader(Header.IF_MATCH, "nah");
-        request.setBody("diferent content");
+        request.setBody("different content");
         response = handler.execute(request);
         assertEquals(Status.PRECONDITION_FAILED, response.getStatus());
     }
