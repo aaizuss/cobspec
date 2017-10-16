@@ -15,7 +15,7 @@ public class FileHandlerTest {
     {
         MockDirectory directory = MockDirectory.emptyDirectory();
 
-        FileHandler2 subject = new FileHandler2(directory);
+        FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "nonExistentFile");
 
         Response response = subject.execute(request);
@@ -27,7 +27,7 @@ public class FileHandlerTest {
     public void givenRequestForATextFileInDirectoryItReturnsOk() {
         MockDirectory directory = MockDirectory.withFile("text-file.txt");
 
-        FileHandler2 subject = new FileHandler2(directory);
+        FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "/text-file.txt");
 
         Response response = subject.execute(request);
@@ -39,7 +39,7 @@ public class FileHandlerTest {
     public void givenRequestForAnImageFileInDirectoryItReturnsOk() {
         MockDirectory directory = MockDirectory.withFile("png-file.png");
 
-        FileHandler2 subject = new FileHandler2(directory);
+        FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "/png-file.png");
 
         Response response = subject.execute(request);
@@ -51,7 +51,7 @@ public class FileHandlerTest {
     public void givenRequestForAGifFileInDirectoryItReturnsOk() {
         MockDirectory directory = MockDirectory.withFile("gif-file.png");
 
-        FileHandler2 subject = new FileHandler2(directory);
+        FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "/gif-file.gif");
 
         Response response = subject.execute(request);
@@ -68,7 +68,7 @@ public class FileHandlerTest {
         files.add("html-file.html");
 
         MockDirectory directory = MockDirectory.withContents(files);
-        FileHandler2 subject = new FileHandler2(directory);
+        FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "/html-file.html");
 
         Response response = subject.execute(request);

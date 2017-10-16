@@ -23,11 +23,9 @@ public class FileHandler implements Handler {
         Response response = new Response(Status.NOT_FOUND);
 
         if (isFolderRequest(request)) {
-            System.out.println("directory handler will do its thing");
-            response = directoryResponse(request);
+            return directoryResponse(request);
         } else if (directory.containsResource(request.getUri())) {
-            System.out.println("can serve resource");
-            response = contentResponse(request);
+            return contentResponse(request);
         }
         return response;
     }
