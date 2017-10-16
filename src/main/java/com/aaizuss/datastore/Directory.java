@@ -34,7 +34,7 @@ public class Directory implements DataStore {
         return contents;
     }
 
-    public static boolean isFolder(String path) {
+    public boolean isFolder(String path) {
         File file = new File(path);
         return file.isDirectory();
     }

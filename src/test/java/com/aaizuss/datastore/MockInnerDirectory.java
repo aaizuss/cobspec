@@ -17,6 +17,11 @@ public class MockInnerDirectory implements DataStore {
         return false;
     }
 
+    @Override
+    public boolean isFolder(String identifier) {
+        return false;
+    }
+
     public ArrayList<String> getContents() {
         ArrayList<String> contents = new ArrayList<>();
         contents.add("broccoli.png");

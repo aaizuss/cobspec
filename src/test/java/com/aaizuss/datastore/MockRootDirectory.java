@@ -22,6 +22,16 @@ public class MockRootDirectory implements DataStore {
     }
 
     @Override
+    public boolean isFolder(String identifier) {
+        switch (identifier) {
+            case "/journey": return true;
+            case "/puppies": return true;
+            case "/text-directory": return true;
+            default: return false;
+        }
+    }
+
+    @Override
     public ArrayList<String> getContents() {
         ArrayList<String> contents = new ArrayList<>();
         contents.add("journey");

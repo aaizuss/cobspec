@@ -8,6 +8,10 @@ import java.util.Hashtable;
 public class MockDirectory implements DataStore {
 
     private String file;
+    private ArrayList<String> contents = new ArrayList<>();
+
+    private String folder;
+    private ArrayList<String> folderContents = new ArrayList<>();
 
     public static MockDirectory emptyDirectory() {
         return new MockDirectory();
@@ -17,20 +21,47 @@ public class MockDirectory implements DataStore {
         return new MockDirectory(fileName);
     }
 
+    public static MockDirectory withFolder(String folderName, ArrayList<String> contents) {
+        return new MockDirectory(folderName, contents);
+    }
+
+    public static MockDirectory withContents(ArrayList<String> contents) {
+        return new MockDirectory(contents);
+    }
+
     public MockDirectory() {}
 
     public MockDirectory(String filename) {
         file = filename;
     }
 
+    public MockDirectory(ArrayList<String> contents) {
+        this.contents = contents;
+    }
+
+    public MockDirectory(String folderName, ArrayList<String> folderContents) {
+        this.folder = folderName;
+        this.folderContents = folderContents;
+    }
+
     @Override
     public boolean containsResource(String identifier) {
+        for (String file : contents) { //this is dumb but it's a mock
+            if (identifier.contains(file)) {
+                return true;
+            }
+        }
         return file != null;
     }
 
     @Override
+    public boolean isFolder(String identifier) {
+        return folder != null;
+    }
+
+    @Override
     public ArrayList<String> getContents() {
-        return null;
+        return contents;
     }
 
     @Override
@@ -53,6 +84,7 @@ public class MockDirectory implements DataStore {
                 String extension = filename.substring(startIndex, endIndex);
                 switch (extension) {
                     case "txt": return "text/plain";
+                    case "html": return "text/html";
                     case "png": return "image/png";
                     case "gif": return "image/gif";
                     default: return "application/octet-stream";

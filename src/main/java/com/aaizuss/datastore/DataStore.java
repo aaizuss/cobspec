@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public interface DataStore {
 
     boolean containsResource(String identifier);
+    boolean isFolder(String identifier);
     ArrayList<String> getContents();
     String getPathString();
     String getPathToResource(String uri);
