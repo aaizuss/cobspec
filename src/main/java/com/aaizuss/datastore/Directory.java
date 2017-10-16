@@ -16,11 +16,6 @@ public class Directory implements DataStore {
     private String pathString;
     private ArrayList<String> contents = new ArrayList<>();
 
-    public Directory() {
-        this.pathString = System.getProperty("user.dir") + "/public/";
-        this.contents = initContents();
-    }
-
     public Directory(String directoryPath) throws DirectoryNotFoundException {
         checkDirectory(directoryPath);
         this.pathString = formatPathString(directoryPath);
@@ -83,10 +78,7 @@ public class Directory implements DataStore {
         return file.isDirectory();
     }
 
-    // this is used by FileResourceWriter to figure out where to write
-    // thinking about changing the interface to require
-    // a method that returns a way to write to a resource more broadly
-    // and connects to other classes
+    // this is used by html creator
     public String getPathToResource(String uri) {
         File file = convertRequestPathToFile(uri);
         return file.getPath();

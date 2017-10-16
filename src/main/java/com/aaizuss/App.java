@@ -16,6 +16,7 @@ public class App {
         String directory = ArgParser.getDirectory(args, DEFAULT_DIRECTORY);
         Router router = setupRouter(directory);
         Server server = new Server(router);
+        ArgParser.printConfig(port, directory);
         try {
             server.run(port);
         } catch (IOException e) {

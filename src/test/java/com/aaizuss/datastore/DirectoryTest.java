@@ -1,11 +1,13 @@
 package com.aaizuss.datastore;
 
 import com.aaizuss.exception.DirectoryNotFoundException;
+import com.aaizuss.http.ContentRange;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
@@ -21,13 +23,6 @@ public class DirectoryTest {
     public static void setUp() throws DirectoryNotFoundException, IOException {
         TestDirectory.populate(testDirectory);
         directory = new Directory(testDirectory.getRoot().getPath());
-    }
-
-    @Test
-    public void testDirectoryConstructorReturnsPublicDirectory() {
-        Directory defaultDirectory = new Directory();
-        String expected = System.getProperty("user.dir") + "/public/";
-        assertEquals(expected, defaultDirectory.getPathString());
     }
 
     @Test
@@ -67,4 +62,29 @@ public class DirectoryTest {
     public void testGetResourceName() {
         assertEquals("pup1.jpg", directory.getResourceName("/puppies/pup1.jpg"));
     }
+
+    @Test
+    public void testReadReturnsContentOfFile() throws IOException, DirectoryNotFoundException {
+        TestDirectory.writeContentToTempTextFile(testDirectory, "hello.txt", "hello there");
+        Directory directory = new Directory(testDirectory.getRoot().getPath());
+
+        assertEquals("hello there\n", new String(directory.read("/hello.txt")));
+    }
+
+    @Test
+    public void testPartialReadReturnsPartialContents() throws IOException, DirectoryNotFoundException {
+        String content = "This is a file that contains text to read part of in order to fulfill a 206.\n";
+        TestDirectory.writeContentToTempTextFile(testDirectory, "test.txt", content);
+        Directory directory = new Directory(testDirectory.getRoot().getPath());
+
+        Hashtable<String,Integer> range = new Hashtable<>();
+        range.put(ContentRange.START, 0);
+        range.put(ContentRange.END, 4);
+
+        String partial = new String(directory.partialRead("/test.txt", range));
+        System.out.println(partial);
+
+        assertEquals("This ", partial);
+    }
+
 }
