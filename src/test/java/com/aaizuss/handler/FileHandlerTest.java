@@ -83,7 +83,7 @@ public class FileHandlerTest {
 //    public void givenRequestForRootItReturnsOk() {
 //        MockDirectory directory = MockDirectory.withFile("hello.txt");
 //
-//        FileHandler2 subject = new FileHandler2(directory);
+//        FileHandler subject = new FileHandler(directory);
 //        Request request = new Request(RequestMethods.GET, "/");
 //
 //        Response response = subject.execute(request);
@@ -96,7 +96,7 @@ public class FileHandlerTest {
 //    public void givenRequestForAFolderInDirectoryItReturnsOk() {
 //        MockDirectory directory = MockDirectory.withFolder("a-folder", new ArrayList<>());
 //
-//        FileHandler2 subject = new FileHandler2(directory);
+//        FileHandler subject = new FileHandler(directory);
 //        Request request = new Request(RequestMethods.GET, "/a-folder");
 //
 //        Response response = subject.execute(request);

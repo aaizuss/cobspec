@@ -46,8 +46,8 @@ public class MockDirectory implements DataStore {
 
     @Override
     public boolean containsResource(String identifier) {
-        for (String file : contents) { //this is dumb but it's a mock
-            if (identifier.contains(file)) {
+        for (String item : contents) { //this is dumb but it's a mock
+            if (identifier.contains(item)) {
                 return true;
             }
         }
