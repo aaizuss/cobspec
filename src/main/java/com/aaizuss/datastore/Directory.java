@@ -1,7 +1,5 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.FileResourceReader;
-import com.aaizuss.ResourceReader;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.ContentRange;
 
@@ -20,10 +18,6 @@ public class Directory implements DataStore {
         checkDirectory(directoryPath);
         this.pathString = formatPathString(directoryPath);
         this.contents = initContents();
-    }
-
-    public ResourceReader getResourceReader() {
-        return new FileResourceReader();
     }
 
     public String getPathString() {
@@ -58,6 +52,11 @@ public class Directory implements DataStore {
         return Arrays.copyOfRange(content, start, end);
     }
 
+    public boolean isFolder(String path) {
+        File file = new File(path);
+        return file.isDirectory();
+    }
+
     private byte[] readFromPath(String filepath) {
         File file = new File(filepath);
 
@@ -70,12 +69,6 @@ public class Directory implements DataStore {
             }
         }
         return content;
-    }
-
-
-    public boolean isFolder(String path) {
-        File file = new File(path);
-        return file.isDirectory();
     }
 
     // this is used by html creator

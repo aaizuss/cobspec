@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 public class FileResourceWriterTest {
     private static Directory directory;
-    private static ResourceReader reader;
 
     @ClassRule
     public static TemporaryFolder tempFolder = new TemporaryFolder();
@@ -24,7 +23,6 @@ public class FileResourceWriterTest {
     public static void setUp() throws DirectoryNotFoundException {
         TestDirectory.populate(tempFolder);
         directory = new Directory(tempFolder.getRoot().getPath());
-        reader = directory.getResourceReader();
     }
 
     @Test
@@ -34,7 +32,7 @@ public class FileResourceWriterTest {
         FileResourceWriter.updateResource(uri, directory, content, false);
 
         File resource = new File(directory.getPathToResource(uri));
-        content = new String(reader.getContent(uri, directory));
+        content = new String(directory.read(uri));
         assertTrue(content.equals("here is my data"));
         assertTrue(resource.exists());
 
@@ -47,11 +45,11 @@ public class FileResourceWriterTest {
         String uri = "/testing_delete.txt";
         FileResourceWriter.updateResource(uri, directory, "blah blah", false);
 
-        String content = new String(reader.getContent(uri, directory));
+        String content = new String(directory.read(uri));
         assertTrue(content.equals("blah blah"));
 
         FileResourceWriter.deleteDataFromResource(uri, directory);
-        content = new String(reader.getContent(uri, directory));
+        content = new String(directory.read(uri));
         assertTrue(content.equals(""));
 
         File resource = new File(directory.getPathToResource(uri));

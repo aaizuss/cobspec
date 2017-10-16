@@ -5,7 +5,7 @@ import java.util.Hashtable;
 public class FileTypeReader {
 
     public enum FileType {
-        IMAGE, TEXT, UNSUPPORTED;
+        IMAGE, TEXT, UNSUPPORTED
     }
 
     public static FileType fileType(String filename) {
