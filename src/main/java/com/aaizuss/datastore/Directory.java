@@ -41,7 +41,6 @@ public class Directory implements DataStore {
 
     public boolean containsResource(String uri) {
         String targetPath = getPathToResource(uri);
-        System.out.println("looking for " + targetPath);
         File file = new File(targetPath);
         return file.exists();
     }
