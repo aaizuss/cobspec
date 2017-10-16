@@ -1,5 +1,6 @@
 package com.aaizuss.handler;
 
+import com.aaizuss.FileTypeReader;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.datastore.Directory;
 import com.aaizuss.FileResourceReader;
@@ -11,11 +12,9 @@ import com.aaizuss.http.Response;
 
 public class FileHandler implements Handler {
     private DataStore directory;
-    private ResourceReader reader;
 
     public FileHandler(DataStore directory) {
         this.directory = directory;
-        this.reader = directory.getResourceReader();
     }
 
     @Override
@@ -31,7 +30,7 @@ public class FileHandler implements Handler {
     }
 
     private Response contentResponse(Request request) {
-        if (reader.getContentType(request.getUri()).contains("text")) {
+        if (FileTypeReader.getType(request.getUri()).contains("text")) {
             return new TextContentHandler(directory).execute(request);
         } else {
             return new MediaContentHandler(directory).execute(request);

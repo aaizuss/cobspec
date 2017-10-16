@@ -48,15 +48,6 @@ public class MockRootDirectory implements DataStore {
     public ResourceReader getResourceReader() {
         return new ResourceReader() {
             @Override
-            public String getContentType(String filename) {
-                if (filename.contains(".txt")) {
-                    return "text/plain";
-                } else {
-                    return "";
-                }
-            }
-
-            @Override
             public byte[] getContent(String uri, DataStore directory) {
                 switch(uri) {
                     case "text-file.txt": return "I am a text file!".getBytes();

@@ -33,13 +33,6 @@ public class FileResourceReaderTest {
     }
 
     @Test
-    public void testGetFileType() {
-        assertEquals("text/html", reader.getContentType("index.html"));
-        assertEquals("text/plain", reader.getContentType("file.txt"));
-        assertEquals("application/octet-stream", reader.getContentType("file.mov"));
-    }
-
-    @Test
     public void testGetContentFromURI() throws DirectoryNotFoundException {
         String expected = "I am a text file!";
         String uri = "/text-file.txt";

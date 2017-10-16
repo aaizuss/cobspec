@@ -78,20 +78,6 @@ public class MockDirectory implements DataStore {
     public ResourceReader getResourceReader() {
         return new ResourceReader() {
             @Override
-            public String getContentType(String filename) {
-                int startIndex = filename.indexOf(".") + 1;
-                int endIndex = filename.length();
-                String extension = filename.substring(startIndex, endIndex);
-                switch (extension) {
-                    case "txt": return "text/plain";
-                    case "html": return "text/html";
-                    case "png": return "image/png";
-                    case "gif": return "image/gif";
-                    default: return "application/octet-stream";
-                }
-            }
-
-            @Override
             public byte[] getContent(String uri, DataStore directory) {
                 return new byte[0];
             }

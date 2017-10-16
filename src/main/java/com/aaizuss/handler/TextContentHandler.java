@@ -1,5 +1,6 @@
 package com.aaizuss.handler;
 
+import com.aaizuss.FileTypeReader;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Status;
@@ -60,14 +61,14 @@ public class TextContentHandler extends ContentHandler {
     private Response partialResponse (Request request) {
         Response response = new Response(Status.PARTIAL);
         response.setHeader(Header.CONTENT_RANGE, request.getHeader(Header.RANGE));
-        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
         response.setBody(reader.getPartialContent(request.getUri(), directory, request.getContentRange()));
         return response;
     }
 
     private Response fullResponse(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
         response.setBody(reader.getContent(request.getUri(), directory));
         return response;
     }

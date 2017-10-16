@@ -15,14 +15,12 @@ public class DirectoryHandler implements Handler {
     }
 
     public DirectoryHandler(DataStore directory, DataStore serverRootDirectory) {
-        System.out.println("in directory handler constructor");
         this.htmlCreator = new DirectoryHtmlCreator(directory, serverRootDirectory);
     }
 
     public Response execute(Request request) {
         switch (request.getMethod()) {
             case RequestMethods.GET:
-                System.out.println("returning directory links");
                 return new Response(Status.OK, getLinksAsBytes());
             case RequestMethods.HEAD:
                 return new Response(Status.OK);
