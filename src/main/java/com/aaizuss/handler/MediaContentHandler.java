@@ -1,14 +1,16 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.http.*;
 import com.aaizuss.ResourceReader;
+import com.aaizuss.http.*;
 import com.aaizuss.datastore.DataStore;
 
 public class MediaContentHandler extends ContentHandler {
     private DataStore directory;
+    private ResourceReader reader;
 
     public MediaContentHandler(DataStore directory) {
         this.directory = directory;
+        this.reader = directory.getResourceReader();
     }
 
     @Override
@@ -19,15 +21,15 @@ public class MediaContentHandler extends ContentHandler {
     @Override
     protected Response head(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
         return response;
     }
 
     @Override
     protected Response get(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
-        response.setBody(ResourceReader.getContent(request.getUri(), directory));
+        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
+        response.setBody(reader.getContent(request.getUri(), directory));
         return response;
     }
 }

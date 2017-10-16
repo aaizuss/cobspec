@@ -1,5 +1,8 @@
 package com.aaizuss.datastore;
 
+import com.aaizuss.FileResourceReader;
+import com.aaizuss.ResourceReader;
+
 import java.util.ArrayList;
 
 public class MockInnerDirectory implements DataStore {
@@ -27,5 +30,10 @@ public class MockInnerDirectory implements DataStore {
 
     public String getPathToResource(String uri) {
         return getPathString() + uri;
+    }
+
+    @Override
+    public ResourceReader getResourceReader() {
+        return new FileResourceReader();
     }
 }

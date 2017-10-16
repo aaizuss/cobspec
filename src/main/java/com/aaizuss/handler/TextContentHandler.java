@@ -1,7 +1,7 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.http.Header;
 import com.aaizuss.ResourceReader;
+import com.aaizuss.http.Header;
 import com.aaizuss.http.Status;
 import com.aaizuss.datastore.DataStore;
 import com.aaizuss.http.Request;
@@ -9,9 +9,11 @@ import com.aaizuss.http.Response;
 
 public class TextContentHandler extends ContentHandler {
     private DataStore directory;
+    private ResourceReader reader;
 
     public TextContentHandler(DataStore directory) {
         this.directory = directory;
+        this.reader = directory.getResourceReader();
     }
 
     @Override
@@ -58,15 +60,15 @@ public class TextContentHandler extends ContentHandler {
     private Response partialResponse (Request request) {
         Response response = new Response(Status.PARTIAL);
         response.setHeader(Header.CONTENT_RANGE, request.getHeader(Header.RANGE));
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
-        response.setBody(ResourceReader.getPartialContent(request.getUri(), directory, request.getContentRange()));
+        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
+        response.setBody(reader.getPartialContent(request.getUri(), directory, request.getContentRange()));
         return response;
     }
 
     private Response fullResponse(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
-        response.setBody(ResourceReader.getContent(request.getUri(), directory));
+        response.setHeader(Header.CONTENT_TYPE, reader.getContentType(request.getUri()));
+        response.setBody(reader.getContent(request.getUri(), directory));
         return response;
     }
 }

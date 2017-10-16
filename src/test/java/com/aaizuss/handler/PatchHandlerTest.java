@@ -25,6 +25,7 @@ public class PatchHandlerTest {
     private String etag = "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec";
     private String uri = "/temp_file.txt";
     private Response response;
+    private ResourceReader reader;
 
 
     public File createTempTxtFile(TemporaryFolder tempFolder) throws IOException {
@@ -41,6 +42,7 @@ public class PatchHandlerTest {
         directory = new Directory(patchFolder.getRoot().getPath());
         request = new Request("PATCH", uri);
         handler = new PatchHandler(directory);
+        reader = directory.getResourceReader();
         createTempTxtFile(patchFolder);
     }
 
@@ -58,7 +60,7 @@ public class PatchHandlerTest {
         request.setBody("different content");
         response = handler.execute(request);
 
-        String updatedContent = new String(ResourceReader.getContent(uri, directory));
+        String updatedContent = new String(reader.getContent(uri, directory));
         assertEquals("different content", updatedContent);
 
     }
@@ -77,7 +79,7 @@ public class PatchHandlerTest {
         request.setBody("different content");
         response = handler.execute(request);
 
-        String updatedContent = new String(ResourceReader.getContent(uri, directory));
+        String updatedContent = new String(reader.getContent(uri, directory));
         assertEquals("default content", updatedContent);
     }
 }

@@ -1,5 +1,7 @@
 package com.aaizuss.datastore;
 
+import com.aaizuss.FileResourceReader;
+import com.aaizuss.ResourceReader;
 import com.aaizuss.exception.DirectoryNotFoundException;
 
 import java.io.File;
@@ -18,6 +20,10 @@ public class Directory implements DataStore {
         checkDirectory(directoryPath);
         this.pathString = formatPathString(directoryPath);
         this.contents = initContents();
+    }
+
+    public ResourceReader getResourceReader() {
+        return new FileResourceReader();
     }
 
     public String getPathString() {

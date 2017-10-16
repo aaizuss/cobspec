@@ -1,7 +1,8 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.datastore.Directory;
 import com.aaizuss.ResourceReader;
+import com.aaizuss.datastore.Directory;
+import com.aaizuss.FileResourceReader;
 import com.aaizuss.http.Status;
 import com.aaizuss.datastore.DataStore;
 import com.aaizuss.exception.DirectoryNotFoundException;
@@ -10,9 +11,11 @@ import com.aaizuss.http.Response;
 
 public class FileHandler implements Handler {
     private DataStore directory;
+    private ResourceReader reader;
 
     public FileHandler(DataStore directory) {
         this.directory = directory;
+        this.reader = directory.getResourceReader();
     }
 
     public Response execute(Request request) {
@@ -27,7 +30,7 @@ public class FileHandler implements Handler {
 
     private Response responseForContentType(Request request) {
         String uri = request.getUri();
-        if (ResourceReader.getContentType(uri).contains("text")) {
+        if (reader.getContentType(uri).contains("text")) {
             return new TextContentHandler(directory).execute(request);
         } else {
             return new MediaContentHandler(directory).execute(request);

@@ -1,5 +1,7 @@
 package com.aaizuss.datastore;
 
+import com.aaizuss.ResourceReader;
+
 import java.util.ArrayList;
 
 // idea: include ways to read from/write to data in data store
@@ -8,6 +10,7 @@ public interface DataStore {
 
     boolean containsResource(String identifier);
     ArrayList<String> getContents();
-    String getPathString(); // this is very specific to a file system
+    String getPathString();
     String getPathToResource(String uri);
+    ResourceReader getResourceReader();
 }

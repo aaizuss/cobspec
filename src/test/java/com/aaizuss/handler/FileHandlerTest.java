@@ -45,5 +45,17 @@ public class FileHandlerTest {
         assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
     }
 
+    @Test
+    public void givenRequestForAGifFileInDirectoryItReturnsOk() {
+        MockDirectory directory = MockDirectory.withFile("gif-file.png");
+
+        FileHandler2 subject = new FileHandler2(directory);
+        Request request = new Request(RequestMethods.GET, "/gif-file.gif");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("image/gif", response.getHeader(Header.CONTENT_TYPE));
+    }
+
 
 }

@@ -10,9 +10,11 @@ import com.aaizuss.http.Status;
 
 public class PatchHandler implements Handler {
     private DataStore directory;
+    private ResourceReader reader;
 
     public PatchHandler(DataStore directory) {
         this.directory = directory;
+        this.reader = directory.getResourceReader();
     }
 
     @Override
@@ -32,7 +34,7 @@ public class PatchHandler implements Handler {
     }
 
     private String getFileContent(Request request) {
-        return new String(ResourceReader.getContent(request.getUri(), directory));
+        return new String(reader.getContent(request.getUri(), directory));
     }
 
 
