@@ -1,46 +1,40 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.datastore.Directory;
+import com.aaizuss.datastore.MockDirectory;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Status;
-import com.aaizuss.datastore.TestDirectory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.RequestMethods;
 import com.aaizuss.http.Response;
 import org.junit.*;
-import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-// todo: figure out how to not rely on temporary files...
 public class TextContentHandlerTest {
 
-    private static Directory directory;
+    private static MockDirectory mockDirectory;
     private TextContentHandler handler;
     private Request request = new Request(RequestMethods.GET, "/partial_content.txt");
     private Request partialRequest = new Request(RequestMethods.GET, "/partial_content.txt");
 
-    @ClassRule
-    public static TemporaryFolder testDirectory = new TemporaryFolder();
-
     @BeforeClass
     public static void onlyOnce() throws DirectoryNotFoundException {
-        TestDirectory.populateForTextContentTests(testDirectory);
-        directory = new Directory(testDirectory.getRoot().getPath());
+        mockDirectory = MockDirectory.withTextFile("partial_content.txt", "This is a file that contains text to read part of in order to fulfill a 206.\n");
+        mockDirectory.addFile("file1");
     }
 
     @Before
     public void setUp() throws IOException, DirectoryNotFoundException {
-        handler = new TextContentHandler(directory);
+        handler = new TextContentHandler(mockDirectory);
     }
 
     @Test
     public void testDoesNotAllowPostToExistingResource() {
         Request post = new Request("POST", "/file1");
-        TextContentHandler handler = new TextContentHandler(directory);
+        TextContentHandler handler = new TextContentHandler(mockDirectory);
         Response response = handler.execute(post);
         assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
     }

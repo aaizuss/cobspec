@@ -1,7 +1,5 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.ResourceReader;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -45,21 +43,16 @@ public class MockRootDirectory implements DataStore {
     }
 
     @Override
-    public ResourceReader getResourceReader() {
-        return new ResourceReader() {
-            @Override
-            public byte[] getContent(String uri, DataStore directory) {
-                switch(uri) {
-                    case "text-file.txt": return "I am a text file!".getBytes();
-                    default: return new byte[0];
-                }
-            }
+    public byte[] read(String uri) {
+        switch (uri) {
+            case "/text-file.txt": return "I am a text file!".getBytes();
+            default: return new byte[0];
+        }
+    }
 
-            @Override
-            public byte[] getPartialContent(String uri, DataStore directory, Hashtable<String, Integer> range) {
-                return new byte[0];
-            }
-        };
+    @Override
+    public byte[] partialRead(String uri, Hashtable<String, Integer> range) {
+        return new byte[0];
     }
 
 }

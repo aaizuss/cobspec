@@ -24,7 +24,7 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void givenRequestForATextFileInDirectoryItReturnsOk() {
+    public void givenRequestForAnEmptyTextFileInDirectoryItReturnsOk() {
         MockDirectory directory = MockDirectory.withFile("text-file.txt");
 
         FileHandler subject = new FileHandler(directory);
@@ -33,6 +33,19 @@ public class FileHandlerTest {
         Response response = subject.execute(request);
         assertEquals(Status.OK, response.getStatus());
         assertEquals("text/plain", response.getHeader(Header.CONTENT_TYPE));
+    }
+
+    @Test
+    public void givenRequestForATextFileInDirectoryItReturnsOkAndDisplaysContent() {
+        MockDirectory directory = MockDirectory.withTextFile("text-file.txt", "I contain info");
+
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/text-file.txt");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("text/plain", response.getHeader(Header.CONTENT_TYPE));
+        assertEquals("I contain info", new String(response.getBody()));
     }
 
     @Test

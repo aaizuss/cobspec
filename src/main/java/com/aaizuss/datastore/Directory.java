@@ -3,9 +3,14 @@ package com.aaizuss.datastore;
 import com.aaizuss.FileResourceReader;
 import com.aaizuss.ResourceReader;
 import com.aaizuss.exception.DirectoryNotFoundException;
+import com.aaizuss.http.ContentRange;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
 
 public class Directory implements DataStore {
     private String pathString;
@@ -34,15 +39,48 @@ public class Directory implements DataStore {
         return contents;
     }
 
-    public boolean isFolder(String path) {
-        File file = new File(path);
-        return file.isDirectory();
-    }
-
     public boolean containsResource(String uri) {
         String targetPath = getPathToResource(uri);
         File file = new File(targetPath);
         return file.exists();
+    }
+
+    public byte[] read(String uri) {
+        String filepath = getPathToResource(uri);
+        return readFromPath(filepath);
+    }
+
+    public byte[] partialRead(String uri, Hashtable<String,Integer> range) {
+        String filepath = getPathToResource(uri);
+        byte[] content = readFromPath(filepath);
+        int contentLength = content.length;
+        int[] contentRange = ContentRange.getRange(range, contentLength);
+
+
+        int start = contentRange[0];
+        int end = contentRange[1];
+
+        return Arrays.copyOfRange(content, start, end);
+    }
+
+    private byte[] readFromPath(String filepath) {
+        File file = new File(filepath);
+
+        byte[] content = new byte[0];
+        if (file.isFile()) {
+            try {
+                content = Files.readAllBytes(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return content;
+    }
+
+
+    public boolean isFolder(String path) {
+        File file = new File(path);
+        return file.isDirectory();
     }
 
     // this is used by FileResourceWriter to figure out where to write

@@ -1,13 +1,15 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.ResourceReader;
+import com.aaizuss.http.ContentRange;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 public class MockDirectory implements DataStore {
 
     private String file;
+    private String text = "";
     private ArrayList<String> contents = new ArrayList<>();
 
     private String folder;
@@ -19,6 +21,10 @@ public class MockDirectory implements DataStore {
 
     public static MockDirectory withFile(String fileName) {
         return new MockDirectory(fileName);
+    }
+
+    public static MockDirectory withTextFile(String fileName, String text) {
+        return new MockDirectory(fileName, text);
     }
 
     public static MockDirectory withFolder(String folderName, ArrayList<String> contents) {
@@ -39,14 +45,32 @@ public class MockDirectory implements DataStore {
         this.contents = contents;
     }
 
+    public MockDirectory(String fileName, String text) {
+        this.file = fileName;
+        this.text = text;
+    }
+
     public MockDirectory(String folderName, ArrayList<String> folderContents) {
         this.folder = folderName;
         this.folderContents = folderContents;
     }
 
+    public void addFile(String fileName) {
+        this.contents.add(fileName);
+        System.out.println("added " + fileName + " to contents");
+        System.out.println("contents now has: ");
+        for (String item : contents) {
+            System.out.println(item);
+        }
+    }
+
     @Override
     public boolean containsResource(String identifier) {
+        System.out.println("in mock contains resource");
+        String resourceName = identifier.substring(1, identifier.length());
+        System.out.println("name  " + resourceName);
         for (String item : contents) { //this is dumb but it's a mock
+            System.out.println("item: " + item + " comparing to " + identifier);
             if (identifier.contains(item)) {
                 return true;
             }
@@ -75,17 +99,19 @@ public class MockDirectory implements DataStore {
     }
 
     @Override
-    public ResourceReader getResourceReader() {
-        return new ResourceReader() {
-            @Override
-            public byte[] getContent(String uri, DataStore directory) {
-                return new byte[0];
-            }
+    public byte[] read(String uri) {
+        return text.getBytes();
+    }
 
-            @Override
-            public byte[] getPartialContent(String uri, DataStore directory, Hashtable<String, Integer> range) {
-                return new byte[0];
-            }
-        };
+    @Override
+    public byte[] partialRead(String uri, Hashtable<String, Integer> range) {
+        byte[] content = read(uri);
+        int length = content.length;
+        int[] contentRange = ContentRange.getRange(range, length);
+
+        int start = contentRange[0];
+        int end = contentRange[1];
+
+        return Arrays.copyOfRange(content, start, end);
     }
 }

@@ -1,9 +1,7 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.FileResourceReader;
-import com.aaizuss.ResourceReader;
-
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MockInnerDirectory implements DataStore {
 
@@ -38,7 +36,13 @@ public class MockInnerDirectory implements DataStore {
     }
 
     @Override
-    public ResourceReader getResourceReader() {
-        return new FileResourceReader();
+    public byte[] read(String uri) {
+        return new byte[0];
     }
+
+    @Override
+    public byte[] partialRead(String uri, Hashtable<String, Integer> range) {
+        return new byte[0];
+    }
+
 }

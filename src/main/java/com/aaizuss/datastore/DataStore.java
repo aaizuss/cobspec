@@ -1,8 +1,7 @@
 package com.aaizuss.datastore;
 
-import com.aaizuss.ResourceReader;
-
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 // idea: include ways to read from/write to data in data store
 // or isolate that responsibility in a different interface
@@ -13,5 +12,8 @@ public interface DataStore {
     ArrayList<String> getContents();
     String getPathString();
     String getPathToResource(String uri);
-    ResourceReader getResourceReader();
+
+    byte[] read(String uri);
+    byte[] partialRead(String uri, Hashtable<String,Integer> range);
+
 }
