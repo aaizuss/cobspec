@@ -1,6 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.FormResource;
+import com.aaizuss.MemoryResource;
 import com.aaizuss.http.Status;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -10,13 +10,13 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class FormHandlerTest {
-    private static FormResource resource;
+    private static MemoryResource resource;
     private static FormHandler handler;
     private Response response;
 
     @BeforeClass
     public static void setUp() {
-        resource = new FormResource();
+        resource = new MemoryResource();
         handler = new FormHandler(resource);
     }
 

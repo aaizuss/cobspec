@@ -56,7 +56,7 @@ public class FileSystemRouterTest {
 
     @Test
     public void testResourceRoutes() {
-        router.addResourceRoute("/form", new FormHandler(new FormResource()));
+        router.addResourceRoute("/form", new FormHandler(new MemoryResource()));
         Request request = new Request("GET","/form");
         assertFalse(router.getResponse(request).getStatus().equals(Status.NOT_FOUND));
     }

@@ -1,13 +1,13 @@
 package com.aaizuss;
 
-public class FormResource {
+public class MemoryResource {
     private String data;
 
-    public FormResource() {
+    public MemoryResource() {
         this.data = "";
     }
 
-    public FormResource(String data) {
+    public MemoryResource(String data) {
         this.data = data;
     }
 
