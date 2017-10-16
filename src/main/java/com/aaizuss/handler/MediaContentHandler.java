@@ -19,14 +19,14 @@ public class MediaContentHandler extends ContentHandler {
     @Override
     protected Response head(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
         return response;
     }
 
     @Override
     protected Response get(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
         response.setBody(directory.read(request.getUri()));
         return response;
     }

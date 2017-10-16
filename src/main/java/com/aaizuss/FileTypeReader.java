@@ -4,7 +4,22 @@ import java.util.Hashtable;
 
 public class FileTypeReader {
 
-    public static String getType(String filename) {
+    public enum FileType {
+        IMAGE, TEXT, UNSUPPORTED;
+    }
+
+    public static FileType fileType(String filename) {
+        String type = getContentType(filename);
+        if (type.contains("text")) {
+            return FileType.TEXT;
+        } else if (type.contains("image")) {
+            return FileType.IMAGE;
+        } else {
+            return FileType.UNSUPPORTED;
+        }
+    }
+
+    public static String getContentType(String filename) {
         String extension = getExtension(filename);
         return typesMap.getOrDefault(extension, "application/octet-stream");
     }

@@ -58,14 +58,14 @@ public class TextContentHandler extends ContentHandler {
     private Response partialResponse (Request request) {
         Response response = new Response(Status.PARTIAL);
         response.setHeader(Header.CONTENT_RANGE, request.getHeader(Header.RANGE));
-        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
         response.setBody(directory.partialRead(request.getUri(), request.getContentRange()));
         return response;
     }
 
     private Response fullResponse(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
         response.setBody(directory.read(request.getUri()));
         return response;
     }

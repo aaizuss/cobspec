@@ -30,10 +30,9 @@ public class FileHandler implements Handler {
     }
 
     private Response contentResponse(Request request) {
-        if (FileTypeReader.getType(request.getUri()).contains("text")) {
-            return new TextContentHandler(directory).execute(request);
-        } else {
-            return new MediaContentHandler(directory).execute(request);
+        switch (FileTypeReader.fileType(request.getUri())) {
+            case TEXT: return new TextContentHandler(directory).execute(request);
+            default: return new MediaContentHandler(directory).execute(request);
         }
     }
 
