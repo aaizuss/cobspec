@@ -69,7 +69,6 @@ public class MockDirectory implements DataStore {
     public void addFile(String fileName) {
         this.contents.add(fileName);
         for (String item : contents) {
-            System.out.println(item);
         }
     }
 
@@ -97,7 +96,6 @@ public class MockDirectory implements DataStore {
 
     @Override
     public String getPathString() {
-        System.out.println(pathString);
         return pathString;
     }
 
