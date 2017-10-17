@@ -114,4 +114,19 @@ public class MockDirectory implements DataStore {
 
         return Arrays.copyOfRange(content, start, end);
     }
+
+    @Override
+    public void writeToResource(String uri, String content, boolean append) {
+        // todo
+    }
+
+    @Override
+    public void clearDataFromResource(String uri) {
+        // todo
+    }
+
+    @Override
+    public void delete(String uri) {
+        // todo
+    }
 }

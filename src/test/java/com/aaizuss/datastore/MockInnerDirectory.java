@@ -45,4 +45,19 @@ public class MockInnerDirectory implements DataStore {
         return new byte[0];
     }
 
+    @Override
+    public void writeToResource(String uri, String content, boolean append) {
+
+    }
+
+    @Override
+    public void clearDataFromResource(String uri) {
+
+    }
+
+    @Override
+    public void delete(String uri) {
+
+    }
+
 }

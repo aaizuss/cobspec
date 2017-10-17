@@ -5,6 +5,7 @@ import com.aaizuss.http.ContentRange;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -85,6 +86,71 @@ public class DirectoryTest {
         System.out.println(partial);
 
         assertEquals("This ", partial);
+    }
+
+    @Test
+    public void testWriteToResourceCreatesResourceIfItDoesNotExistAndWritesToIt() {
+        String uri = "/stuff.txt";
+        String content = "here is my data";
+        directory.writeToResource(uri, content, false);
+
+        assertEquals(content, new String(directory.read(uri)));
+
+        File resource = new File(directory.getPathToResource(uri));
+        assertTrue(resource.exists());
+        resource.delete();
+        assertFalse(resource.exists());
+    }
+
+    @Test
+    public void testWriteToResourceAppendsDataToAnExistingResource() {
+        String uri = "/text-file.txt";
+        String newContent = "here is new data";
+        String originalContent = new String(directory.read(uri));
+        directory.writeToResource(uri, newContent, true);
+
+        assertEquals(originalContent + newContent, new String(directory.read(uri)));
+    }
+
+    @Test
+    public void testWriteToResourceReplacesDataOfExistingResource() {
+        String uri = "/text-file.txt";
+        String newContent = "hello world";
+        directory.writeToResource(uri, newContent, false);
+
+        assertEquals(newContent, new String(directory.read(uri)));
+    }
+
+    @Test
+    public void testClearDataFromResource() {
+        String uri = "/testing_delete.txt";
+        directory.writeToResource(uri, "blah blah", false);
+
+        String content = new String(directory.read(uri));
+        assertTrue(content.equals("blah blah"));
+
+        directory.clearDataFromResource(uri);
+        content = new String(directory.read(uri));
+        assertTrue(content.equals(""));
+
+        File resource = new File(directory.getPathToResource(uri));
+        resource.delete();
+        assertFalse(resource.exists());
+    }
+
+    @Test
+    public void testDeleteDeletesResource() {
+        String uri = "/testing_delete.txt";
+        directory.writeToResource(uri, "blah blah", false);
+
+        String content = new String(directory.read(uri));
+        assertTrue(content.equals("blah blah"));
+
+        File resource = new File(directory.getPathToResource(uri));
+        assertTrue(resource.exists());
+
+        directory.delete(uri);
+        assertFalse(resource.exists());
     }
 
 }

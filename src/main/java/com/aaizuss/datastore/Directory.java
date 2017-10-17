@@ -4,6 +4,7 @@ import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.ContentRange;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -50,6 +51,22 @@ public class Directory implements DataStore {
         int end = contentRange[1];
 
         return Arrays.copyOfRange(content, start, end);
+    }
+
+    public void writeToResource(String uri, String content, boolean append) {
+        String path = getPathToResource(uri);
+        File resource = createResource(path);
+        write(resource, content, append);
+    }
+
+    public void clearDataFromResource(String uri) {
+        File resource = createResource(getPathToResource(uri));
+        write(resource, "", false);
+    }
+
+    public void delete(String uri) {
+        File resource = new File(getPathToResource(uri));
+        resource.delete();
     }
 
     public boolean isFolder(String path) {
@@ -118,6 +135,24 @@ public class Directory implements DataStore {
         File file = new File(directoryPath);
         if (!file.exists()) {
             throw new DirectoryNotFoundException(directoryPath);
+        }
+    }
+
+    private File createResource(String resourcePath) {
+        File resource = new File(resourcePath);
+        try {
+            resource.createNewFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resource;
+    }
+
+    private void write(File resource, String content, boolean append) {
+        try (FileWriter writer = new FileWriter(resource, append)) {
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

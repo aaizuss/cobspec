@@ -1,6 +1,5 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.*;
 import com.aaizuss.datastore.Directory;
 import com.aaizuss.exception.DirectoryNotFoundException;
 import com.aaizuss.http.Header;
@@ -29,7 +28,7 @@ public class PatchHandlerTest {
 
     public File createTempTxtFile(TemporaryFolder tempFolder) throws IOException {
         File createdFile = tempFolder.newFile("temp_file.txt");
-        FileResourceWriter.updateResource(uri, directory, "default content", false);
+        directory.writeToResource(uri, "default content", false);
         return createdFile;
     }
 

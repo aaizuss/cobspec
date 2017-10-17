@@ -14,8 +14,9 @@ public interface DataStore {
     byte[] read(String uri);
     byte[] partialRead(String uri, Hashtable<String,Integer> range);
 
-    // possibly:
-    // void updateResource(String uri, String content, boolean append)
-    // void deleteDataFromResource(String uri)
+
+    void writeToResource(String uri, String content, boolean append);
+    void clearDataFromResource(String uri);
+    void delete(String uri);
 
 }
