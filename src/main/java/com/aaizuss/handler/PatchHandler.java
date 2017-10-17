@@ -33,6 +33,4 @@ public class PatchHandler implements Handler {
     private String getFileContent(Request request) {
         return new String(directory.read(request.getUri()));
     }
-
-
 }

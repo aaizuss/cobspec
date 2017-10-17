@@ -117,16 +117,25 @@ public class MockDirectory implements DataStore {
 
     @Override
     public void writeToResource(String uri, String content, boolean append) {
-        // todo
+        file = uri.substring(0, uri.length());
+        if (append) {
+            text += content;
+        } else {
+            text = content;
+        }
     }
 
     @Override
     public void clearDataFromResource(String uri) {
-        // todo
+        file = uri.substring(0, uri.length());
+        text = "";
     }
 
     @Override
     public void delete(String uri) {
-        // todo
+        String resourceName = uri.substring(0, uri.length());
+        if (file.equals(resourceName)) {
+            file = null;
+        }
     }
 }
