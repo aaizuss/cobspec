@@ -8,6 +8,8 @@ import java.util.Hashtable;
 
 public class MockDirectory implements DataStore {
 
+    private String pathString;
+
     private String file;
     private String text = "";
     private ArrayList<String> contents = new ArrayList<>();
@@ -35,6 +37,10 @@ public class MockDirectory implements DataStore {
         return new MockDirectory(contents);
     }
 
+    public static MockDirectory withPathStringAndContents(String pathString, String[] contents) {
+        return new MockDirectory(pathString, contents);
+    }
+
     public MockDirectory() {}
 
     public MockDirectory(String filename) {
@@ -55,6 +61,11 @@ public class MockDirectory implements DataStore {
         this.folderContents = folderContents;
     }
 
+    public MockDirectory(String pathString, String[] contents) {
+        this.pathString = pathString;
+        this.contents = new ArrayList<>(Arrays.asList(contents));
+    }
+
     public void addFile(String fileName) {
         this.contents.add(fileName);
         for (String item : contents) {
@@ -67,7 +78,6 @@ public class MockDirectory implements DataStore {
         String resourceName = identifier.substring(1, identifier.length());
 
         for (String item : contents) { //this is dumb but it's a mock
-            System.out.println("item: " + item + " comparing to " + identifier);
             if (resourceName.equals(item)) {
                 return true;
             }
@@ -87,12 +97,13 @@ public class MockDirectory implements DataStore {
 
     @Override
     public String getPathString() {
-        return null;
+        System.out.println(pathString);
+        return pathString;
     }
 
     @Override
     public String getPathToResource(String uri) {
-        return null;
+        return pathString + uri;
     }
 
     @Override

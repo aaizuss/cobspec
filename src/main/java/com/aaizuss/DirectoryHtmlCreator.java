@@ -56,12 +56,12 @@ public class DirectoryHtmlCreator {
 
     private String getParentPathString(DataStore currentDirectory, DataStore rootDirectory) {
         String pathString = currentDirectory.getPathString();
-        String rootDirectoryPathString = formatPathString(rootDirectory.getPathString());
+        String rootDirectoryPathString = rootDirectory.getPathString();
 
         if (pathString.equals(rootDirectoryPathString)) {
             return NO_PARENT;
         } else {
-            String fullParent = formatPathString(pathString) + "..";
+            String fullParent = pathString + "..";
             return pathDifference(rootDirectoryPathString, fullParent);
         }
     }
@@ -77,14 +77,6 @@ public class DirectoryHtmlCreator {
         } else {
             String displayText = BACK;
             return buildHTML(displayText, parentPath);
-        }
-    }
-
-    private static String formatPathString(String pathString) {
-        if (pathString.endsWith("/")) {
-            return pathString;
-        } else {
-            return pathString + "/";
         }
     }
 
