@@ -11,14 +11,22 @@ import static org.junit.Assert.assertEquals;
 
 public class DirectoryHtmlCreatorTest {
     private static DirectoryHtmlCreator htmlCreator;
-    private static DataStore rootDirectory;
-    private static DataStore puppiesDirectory;
+//    private static DataStore rootDirectory;
+//    private static DataStore puppiesDirectory;
+
+    private static MockDirectory mockRoot;
+    private static MockDirectory mockInner;
 
     @BeforeClass
     public static void setUp() throws DirectoryNotFoundException, IOException {
-        rootDirectory = new MockRootDirectory();
-        puppiesDirectory = new MockInnerDirectory();
-        htmlCreator = new DirectoryHtmlCreator(puppiesDirectory, rootDirectory);
+//        rootDirectory = new MockRootDirectory();
+//        puppiesDirectory = new MockInnerDirectory();
+//        htmlCreator = new DirectoryHtmlCreator(puppiesDirectory, rootDirectory);
+        String[] rootContents = {"journey","puppies", "text-file.txt"};
+        String[] innerContents = {"broccoli.png", "pup1.jpg"};
+        mockRoot = MockDirectory.withPathStringAndContents("/test-directory/", rootContents);
+        mockInner = MockDirectory.withPathStringAndContents("/test-directory/puppies/", innerContents);
+        htmlCreator = new DirectoryHtmlCreator(mockInner, mockRoot);
     }
 
     @Test
@@ -35,7 +43,8 @@ public class DirectoryHtmlCreatorTest {
                 "<a href='/journey'>journey</a></br>\r\n" +
                         "<a href='/puppies'>puppies</a></br>\r\n" +
                         "<a href='/text-file.txt'>text-file.txt</a></br>\r\n";
-        DirectoryHtmlCreator creator = new DirectoryHtmlCreator(rootDirectory, rootDirectory);
+        //DirectoryHtmlCreator creator = new DirectoryHtmlCreator(rootDirectory, rootDirectory);
+        DirectoryHtmlCreator creator = new DirectoryHtmlCreator(mockRoot, mockRoot);
         assertEquals(expected, creator.getLinkString());
     }
 
