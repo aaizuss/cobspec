@@ -6,9 +6,8 @@ import com.aaizuss.http.Status;
 import com.aaizuss.datastore.MockInnerDirectory;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
-import org.junit.Assert;
-import org.junit.Test;
 
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class MediaContentHandlerTest {
@@ -17,10 +16,12 @@ public class MediaContentHandlerTest {
     private Request jpgRequest = new Request("GET", "/pup1.jpg");
 
     @Test
-    public void testResponseHeaderAndStatus() {
+    public void givenImageRequestResponseIsOKAndContainsContentType() {
         handler = new MediaContentHandler(directory);
+
         Response response = handler.execute(jpgRequest);
-        Assert.assertEquals(Status.OK, response.getStatus());
+
+        assertEquals(Status.OK, response.getStatus());
         assertEquals("image/jpeg", response.getHeader(Header.CONTENT_TYPE));
     }
 
@@ -28,7 +29,9 @@ public class MediaContentHandlerTest {
     public void testPostRequestReturnsMethodNotAllowed() {
         Request postRequest = new Request("POST", "/pup1.jpg");
         handler = new MediaContentHandler(directory);
+
         Response response = handler.execute(postRequest);
+
         assertEquals(Status.METHOD_NOT_ALLOWED, response.getStatus());
     }
 
@@ -36,7 +39,9 @@ public class MediaContentHandlerTest {
     public void testOptionsRequest() {
         Request optionsRequest = new Request("OPTIONS", "/pup1.jpg");
         handler = new MediaContentHandler(directory);
+
         Response response = handler.execute(optionsRequest);
+
         assertEquals(Status.OK, response.getStatus());
         assertEquals("GET,HEAD,OPTIONS", response.getHeader(Header.ALLOW));
     }

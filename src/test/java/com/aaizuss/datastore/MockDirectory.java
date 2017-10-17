@@ -57,8 +57,6 @@ public class MockDirectory implements DataStore {
 
     public void addFile(String fileName) {
         this.contents.add(fileName);
-        System.out.println("added " + fileName + " to contents");
-        System.out.println("contents now has: ");
         for (String item : contents) {
             System.out.println(item);
         }
@@ -66,12 +64,11 @@ public class MockDirectory implements DataStore {
 
     @Override
     public boolean containsResource(String identifier) {
-        System.out.println("in mock contains resource");
         String resourceName = identifier.substring(1, identifier.length());
-        System.out.println("name  " + resourceName);
+
         for (String item : contents) { //this is dumb but it's a mock
             System.out.println("item: " + item + " comparing to " + identifier);
-            if (identifier.contains(item)) {
+            if (resourceName.equals(item)) {
                 return true;
             }
         }

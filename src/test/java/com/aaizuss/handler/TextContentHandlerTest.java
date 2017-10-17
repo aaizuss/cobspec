@@ -87,4 +87,14 @@ public class TextContentHandlerTest {
         assertEquals(expected, new String(response.getBody()));
     }
 
+    @Test
+    public void givenInvalidPatchRequestReturnsPreconditionFailed() {
+        request.setMethod(RequestMethods.PATCH);
+        request.addHeader(Header.IF_MATCH, "nah");
+        request.setBody("different content");
+        Response response = handler.execute(request);
+
+        assertEquals(Status.PRECONDITION_FAILED, response.getStatus());
+    }
+
 }
