@@ -11,14 +11,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class BasicAuthHandlerTest {
-    private static MemoryResource resource;
     private static BasicAuthHandler handler;
     private Response response;
 
     @BeforeClass
     public static void setUp() {
-        resource = new MemoryResource();
-        handler = new BasicAuthHandler(resource);
+        handler = new BasicAuthHandler();
     }
 
     @Test
