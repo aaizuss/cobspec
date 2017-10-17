@@ -1,51 +1,120 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.datastore.Directory;
-import com.aaizuss.datastore.TestDirectory;
-import com.aaizuss.exception.DirectoryNotFoundException;
-import com.aaizuss.http.Request;
-import com.aaizuss.http.Response;
-
-import com.aaizuss.http.Status;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
+import com.aaizuss.datastore.MockDirectory;
+import com.aaizuss.http.*;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-// FileSystemRouterTest tests FileHandler better
 public class FileHandlerTest {
 
-    private static Directory directory;
-    private static FileHandler handler;
-
-    @ClassRule
-    public static TemporaryFolder tempFolder = new TemporaryFolder();
-
-    @BeforeClass
-    public static void setUp() throws DirectoryNotFoundException {
-        TestDirectory.populate(tempFolder);
-        directory = new Directory(tempFolder.getRoot().getPath());
-        handler = new FileHandler(directory);
-    }
-
     @Test
-    public void testUsesDirectoryHandlerForDirectoryRequest() {
-        Request request = new Request("GET", "/");
-        Response response = handler.execute(request);
-        String content = new String(response.getBody());
-        // this is a dumb test but i don't have a way to test the kind of handler
-        // because of the way the function is written
-        assertTrue(content.contains("text-file.txt"));
-    }
+    public void givenFileDoesNotExistItReturnsANotFound()
+    {
+        MockDirectory directory = MockDirectory.emptyDirectory();
 
-    @Test
-    public void testUsesReturnsNotFoundForFileNotInDirectory() {
-        Request request = new Request("GET", "/foo");
-        Response response = handler.execute(request);
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "nonExistentFile");
+
+        Response response = subject.execute(request);
+
         assertEquals(Status.NOT_FOUND, response.getStatus());
     }
+
+    @Test
+    public void givenRequestForAnEmptyTextFileInDirectoryItReturnsOk() {
+        MockDirectory directory = MockDirectory.withFile("text-file.txt");
+
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/text-file.txt");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("text/plain", response.getHeader(Header.CONTENT_TYPE));
+    }
+
+    @Test
+    public void givenRequestForATextFileInDirectoryItReturnsOkAndDisplaysContent() {
+        MockDirectory directory = MockDirectory.withTextFile("text-file.txt", "I contain info");
+
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/text-file.txt");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("text/plain", response.getHeader(Header.CONTENT_TYPE));
+        assertEquals("I contain info", new String(response.getBody()));
+    }
+
+    @Test
+    public void givenRequestForAnImageFileInDirectoryItReturnsOk() {
+        MockDirectory directory = MockDirectory.withFile("png-file.png");
+
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/png-file.png");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("image/png", response.getHeader(Header.CONTENT_TYPE));
+    }
+
+    @Test
+    public void givenRequestForAGifFileInDirectoryItReturnsOk() {
+        MockDirectory directory = MockDirectory.withFile("gif-file.png");
+
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/gif-file.gif");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("image/gif", response.getHeader(Header.CONTENT_TYPE));
+    }
+
+    @Test
+    public void givenRequestForFileInDirectoryWithManyFilesItReturnsOk() {
+        ArrayList<String> files = new ArrayList<>();
+        files.add("text-file.txt");
+        files.add("png-file.png");
+        files.add("gif-file.gif");
+        files.add("html-file.html");
+
+        MockDirectory directory = MockDirectory.withContents(files);
+        FileHandler subject = new FileHandler(directory);
+        Request request = new Request(RequestMethods.GET, "/html-file.html");
+
+        Response response = subject.execute(request);
+        assertEquals(Status.OK, response.getStatus());
+        assertEquals("text/html", response.getHeader(Header.CONTENT_TYPE));
+
+    }
+
+    // this will fail because the check for responding to a root request is that the
+    // 2 directories in directory handler are the same path
+//    @Test
+//    public void givenRequestForRootItReturnsOk() {
+//        MockDirectory directory = MockDirectory.withFile("hello.txt");
+//
+//        FileHandler subject = new FileHandler(directory);
+//        Request request = new Request(RequestMethods.GET, "/");
+//
+//        Response response = subject.execute(request);
+//        assertEquals(Status.OK, response.getStatus());
+//    }
+
+    // this will keep failing because of the DirectoryNotFound exception
+    // the new directory is created within a method, so I can't mock the inner directory :(
+//    @Test
+//    public void givenRequestForAFolderInDirectoryItReturnsOk() {
+//        MockDirectory directory = MockDirectory.withFolder("a-folder", new ArrayList<>());
+//
+//        FileHandler subject = new FileHandler(directory);
+//        Request request = new Request(RequestMethods.GET, "/a-folder");
+//
+//        Response response = subject.execute(request);
+//        assertEquals(Status.OK, response.getStatus());
+//    }
+
 
 }

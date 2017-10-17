@@ -16,6 +16,7 @@ public class App {
         String directory = ArgParser.getDirectory(args, DEFAULT_DIRECTORY);
         Router router = setupRouter(directory);
         Server server = new Server(router);
+        ArgParser.printConfig(port, directory);
         try {
             server.run(port);
         } catch (IOException e) {
@@ -28,7 +29,7 @@ public class App {
             Directory directory = new Directory(directoryPath);
             FileSystemRouter router = new FileSystemRouter(directory);
             addOptionsRoutes(router);
-            router.addResourceRoute("/form", new FormHandler(new FormResource()));
+            router.addResourceRoute("/form", new FormHandler(new MemoryResource()));
             router.addRoute(RequestMethods.GET, "/parameters", new ParameterDecode());
             router.addRoute(RequestMethods.GET, "/redirect", new RedirectHandler());
             router.addRoute(RequestMethods.GET, "/coffee", new CoffeeTeaHandler());

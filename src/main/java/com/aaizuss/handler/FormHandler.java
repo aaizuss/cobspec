@@ -1,6 +1,6 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.FormResource;
+import com.aaizuss.MemoryResource;
 import com.aaizuss.http.Status;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.RequestMethods;
@@ -9,9 +9,9 @@ import com.aaizuss.http.Response;
 import java.util.ArrayList;
 
 public class FormHandler implements Handler {
-    private FormResource resource;
+    private MemoryResource resource;
 
-    public FormHandler(FormResource resource) {
+    public FormHandler(MemoryResource resource) {
         this.resource = resource;
     }
 

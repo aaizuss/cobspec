@@ -1,6 +1,5 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.*;
 import com.aaizuss.datastore.DataStore;
 import com.aaizuss.encoder.ShaEncoder;
 import com.aaizuss.http.Header;
@@ -18,7 +17,7 @@ public class PatchHandler implements Handler {
     @Override
     public Response execute(Request request) {
         if (etagMatches(request)) {
-            FileResourceWriter.updateResource(request.getUri(), directory, request.getBody(), false);
+            directory.writeToResource(request.getUri(), request.getBody(), false);
             return new Response(Status.NO_CONTENT);
         } else {
             return new Response(Status.PRECONDITION_FAILED);
@@ -32,8 +31,6 @@ public class PatchHandler implements Handler {
     }
 
     private String getFileContent(Request request) {
-        return new String(ResourceReader.getContent(request.getUri(), directory));
+        return new String(directory.read(request.getUri()));
     }
-
-
 }

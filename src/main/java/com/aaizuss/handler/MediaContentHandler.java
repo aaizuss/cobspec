@@ -1,60 +1,33 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.http.Header;
-import com.aaizuss.ResourceReader;
-import com.aaizuss.http.Status;
+import com.aaizuss.FileTypeReader;
+import com.aaizuss.http.*;
 import com.aaizuss.datastore.DataStore;
-import com.aaizuss.http.Request;
-import com.aaizuss.http.RequestMethods;
-import com.aaizuss.http.Response;
 
-public class MediaContentHandler implements Handler {
+public class MediaContentHandler extends ContentHandler {
     private DataStore directory;
 
     public MediaContentHandler(DataStore directory) {
         this.directory = directory;
     }
 
-    public Response execute(Request request) {
-        switch (request.getMethod()) {
-            case RequestMethods.GET:
-                return getResponse(request);
-            case RequestMethods.HEAD:
-                return headResponse(request);
-            case RequestMethods.OPTIONS:
-                return optionsResponse(request);
-            default:
-                return notAllowedResponse();
-        }
+    @Override
+    protected String allowedMethods() {
+        return "GET,HEAD,OPTIONS";
     }
 
-    private Response notAllowedResponse() {
-        Response response = new Response(Status.METHOD_NOT_ALLOWED);
-        response.setHeader(Header.ALLOW, "GET,HEAD,OPTIONS");
-        return response;
-    }
-
-
-    private Response optionsResponse(Request request) {
+    @Override
+    protected Response head(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
-        response.setHeader(Header.ALLOW, "GET,HEAD,OPTIONS");
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
         return response;
     }
 
-    private Response headResponse(Request request) {
-        return statusAndHeaders(request);
-    }
-
-    private Response getResponse(Request request) {
-        Response response = statusAndHeaders(request);
-        response.setBody(ResourceReader.getContent(request.getUri(), directory));
-        return response;
-    }
-
-    private Response statusAndHeaders(Request request) {
+    @Override
+    protected Response get(Request request) {
         Response response = new Response(Status.OK);
-        response.setHeader(Header.CONTENT_TYPE, ResourceReader.getContentType(request.getUri()));
+        response.setHeader(Header.CONTENT_TYPE, FileTypeReader.getContentType(request.getUri()));
+        response.setBody(directory.read(request.getUri()));
         return response;
     }
 }

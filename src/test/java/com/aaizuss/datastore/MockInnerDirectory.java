@@ -1,6 +1,7 @@
 package com.aaizuss.datastore;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MockInnerDirectory implements DataStore {
 
@@ -11,6 +12,11 @@ public class MockInnerDirectory implements DataStore {
                 return true;
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean isFolder(String identifier) {
         return false;
     }
 
@@ -28,4 +34,30 @@ public class MockInnerDirectory implements DataStore {
     public String getPathToResource(String uri) {
         return getPathString() + uri;
     }
+
+    @Override
+    public byte[] read(String uri) {
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] partialRead(String uri, Hashtable<String, Integer> range) {
+        return new byte[0];
+    }
+
+    @Override
+    public void writeToResource(String uri, String content, boolean append) {
+
+    }
+
+    @Override
+    public void clearDataFromResource(String uri) {
+
+    }
+
+    @Override
+    public void delete(String uri) {
+
+    }
+
 }

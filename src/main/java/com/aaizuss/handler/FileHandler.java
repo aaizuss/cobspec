@@ -1,7 +1,7 @@
 package com.aaizuss.handler;
 
+import com.aaizuss.FileTypeReader;
 import com.aaizuss.datastore.Directory;
-import com.aaizuss.ResourceReader;
 import com.aaizuss.http.Status;
 import com.aaizuss.datastore.DataStore;
 import com.aaizuss.exception.DirectoryNotFoundException;
@@ -15,52 +15,46 @@ public class FileHandler implements Handler {
         this.directory = directory;
     }
 
+    @Override
     public Response execute(Request request) {
-        if (canServeDirectory(request)) {
-            return responseForDirectoryRequest(request);
+        Response response = new Response(Status.NOT_FOUND);
+
+        if (isFolderRequest(request)) {
+            return directoryResponse(request);
         } else if (directory.containsResource(request.getUri())) {
-            return responseForContentType(request);
-        } else {
-            return new Response(Status.NOT_FOUND);
+            return contentResponse(request);
+        }
+        return response;
+    }
+
+    private Response contentResponse(Request request) {
+        switch (FileTypeReader.fileType(request.getUri())) {
+            case TEXT: return new TextContentHandler(directory).execute(request);
+            default: return new MediaContentHandler(directory).execute(request);
         }
     }
 
-    private Response responseForContentType(Request request) {
-        String uri = request.getUri();
-        if (ResourceReader.getContentType(uri).contains("text")) {
-            return new TextContentHandler(directory).execute(request);
-        } else {
-            return new MediaContentHandler(directory).execute(request);
-        }
-    }
-
-    private Response responseForDirectoryRequest(Request request) {
+    private Response directoryResponse(Request request) {
+        String newPath = directory.getPathString() + removeLeadingSlash(request.getUri());
         try {
-            return setupDirectoryHandler(request).execute(request);
+            DataStore changedDirectory = new Directory(newPath);
+            return new DirectoryHandler(changedDirectory, directory).execute(request);
         } catch (DirectoryNotFoundException e) {
-            e.printStackTrace();
             return new Response(Status.NOT_FOUND);
         }
     }
 
-    private DirectoryHandler setupDirectoryHandler(Request request) throws DirectoryNotFoundException {
-        String newPath = directory.getPathString() + formatUriForDirectory(request.getUri());
-        Directory changedDirectory = new Directory(newPath);
-        return new DirectoryHandler(changedDirectory, directory);
+    private boolean isFolderRequest(Request request) {
+        String uri = directory.getPathString() + removeLeadingSlash(request.getUri());
+        return directory.isFolder(uri) || uri.equals("/");
     }
 
-    private String formatUriForDirectory(String uri) {
+
+    private String removeLeadingSlash(String uri) {
         if (uri.startsWith("/")) {
             return uri.substring(1, uri.length());
         } else {
             return uri;
         }
     }
-
-    private boolean canServeDirectory(Request request) {
-        String path = directory.getPathString() + formatUriForDirectory(request.getUri());
-        return Directory.isFolder(path) || request.getUri().equals("/");
-    }
-
-
 }
