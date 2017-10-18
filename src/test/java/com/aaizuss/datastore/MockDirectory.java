@@ -68,8 +68,6 @@ public class MockDirectory implements DataStore {
 
     public void addFile(String fileName) {
         this.contents.add(fileName);
-        for (String item : contents) {
-        }
     }
 
     @Override
@@ -125,7 +123,7 @@ public class MockDirectory implements DataStore {
     public void writeToResource(String uri, String content, boolean append) {
         file = uri.substring(0, uri.length());
         if (append) {
-            text += content;
+            text += "\n" + content;
         } else {
             text = content;
         }

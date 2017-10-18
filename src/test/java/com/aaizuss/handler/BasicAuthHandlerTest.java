@@ -1,6 +1,5 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.MemoryResource;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
