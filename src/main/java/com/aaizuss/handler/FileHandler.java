@@ -17,11 +17,16 @@ public class FileHandler implements Handler {
 
     @Override
     public Response execute(Request request) {
+        RequestLogger logger = new RequestLogger(directory);
+        logger.logRequest(request);
+
         Response response = new Response(Status.NOT_FOUND);
 
         if (isFolderRequest(request)) {
+            System.out.println("folder request");
             return directoryResponse(request);
         } else if (directory.containsResource(request.getUri())) {
+            System.out.println("contains resource");
             return contentResponse(request);
         }
         return response;

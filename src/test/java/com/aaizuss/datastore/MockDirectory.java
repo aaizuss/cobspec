@@ -5,14 +5,16 @@ import com.aaizuss.http.ContentRange;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.TreeMap;
 
 public class MockDirectory implements DataStore {
 
     private String pathString;
 
-    private String file;
-    private String text = "";
-    private ArrayList<String> contents = new ArrayList<>();
+//    private String file;
+//    private String text = "";
+//    private ArrayList<String> contents = new ArrayList<>();
+    private Hashtable<String,String> filesAndContents = new Hashtable<>();
 
     private String folder;
     private ArrayList<String> folderContents = new ArrayList<>();
@@ -44,16 +46,17 @@ public class MockDirectory implements DataStore {
     public MockDirectory() {}
 
     public MockDirectory(String filename) {
-        file = filename;
+        filesAndContents.put(filename, "");
     }
 
     public MockDirectory(ArrayList<String> contents) {
-        this.contents = contents;
+        for (String fileName : contents) {
+            filesAndContents.put(fileName, "");
+        }
     }
 
     public MockDirectory(String fileName, String text) {
-        this.file = fileName;
-        this.text = text;
+        filesAndContents.put(fileName, text);
     }
 
     public MockDirectory(String folderName, ArrayList<String> folderContents) {
@@ -63,23 +66,24 @@ public class MockDirectory implements DataStore {
 
     public MockDirectory(String pathString, String[] contents) {
         this.pathString = pathString;
-        this.contents = new ArrayList<>(Arrays.asList(contents));
+        for (String fileName : contents) {
+            filesAndContents.put(fileName, "");
+        }
     }
 
     public void addFile(String fileName) {
-        this.contents.add(fileName);
+        filesAndContents.put(fileName, "");
     }
 
     @Override
     public boolean containsResource(String identifier) {
         String resourceName = identifier.substring(1, identifier.length());
-
-        for (String item : contents) { //this is dumb but it's a mock
+        for (String item : filesAndContents.keySet()) { //this is dumb but it's a mock
             if (resourceName.equals(item)) {
                 return true;
             }
         }
-        return file != null;
+        return false;
     }
 
     @Override
@@ -89,6 +93,11 @@ public class MockDirectory implements DataStore {
 
     @Override
     public ArrayList<String> getContents() {
+        TreeMap<String,String> ordered = new TreeMap<>(filesAndContents);
+        ArrayList<String> contents = new ArrayList<>();
+        for (String fileName : ordered.keySet()) {
+            contents.add(fileName);
+        }
         return contents;
     }
 
@@ -104,7 +113,8 @@ public class MockDirectory implements DataStore {
 
     @Override
     public byte[] read(String uri) {
-        return text.getBytes();
+        String fileName = uri.substring(1, uri.length());
+        return filesAndContents.get(fileName).getBytes();
     }
 
     @Override
@@ -121,25 +131,26 @@ public class MockDirectory implements DataStore {
 
     @Override
     public void writeToResource(String uri, String content, boolean append) {
-        file = uri.substring(0, uri.length());
+        String fileName = uri.substring(1, uri.length());
+        String text = filesAndContents.get(fileName);
         if (append) {
             text += "\n" + content;
+            filesAndContents.put(fileName, text);
         } else {
             text = content;
+            filesAndContents.put(fileName, text);
         }
     }
 
     @Override
     public void clearDataFromResource(String uri) {
-        file = uri.substring(0, uri.length());
-        text = "";
+        String fileName = uri.substring(1, uri.length());
+        filesAndContents.put(fileName, "");
     }
 
     @Override
     public void delete(String uri) {
         String resourceName = uri.substring(0, uri.length());
-        if (file.equals(resourceName)) {
-            file = null;
-        }
+        filesAndContents.remove(resourceName);
     }
 }

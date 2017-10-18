@@ -1,5 +1,6 @@
 package com.aaizuss.handler;
 
+import com.aaizuss.datastore.MockDirectory;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
@@ -7,6 +8,7 @@ import com.aaizuss.http.Status;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class BasicAuthHandlerTest {
@@ -15,7 +17,7 @@ public class BasicAuthHandlerTest {
 
     @BeforeClass
     public static void setUp() {
-        handler = new BasicAuthHandler();
+        handler = new BasicAuthHandler(MockDirectory.emptyDirectory());
     }
 
     @Test
@@ -54,13 +56,13 @@ public class BasicAuthHandlerTest {
     }
 
     @Test
-    public void givenRequestWithValidCredentialsReturnsShowsSillyCobspecStuffInBody() {
+    public void givenRequestWithValidCredentialsShowsLogsInBody() {
         Request request = new Request("GET", "/logs");
         request.addHeader(Header.AUTHORIZATION, "Basic YWRtaW46aHVudGVyMg==");
         response = handler.execute(request);
 
-        String expectedLog = "GET /log HTTP/1.1\nPUT /these HTTP/1.1\nHEAD /requests HTTP/1.1\n";
-        assertEquals(expectedLog, new String(response.getBody()));
+        String expectedLog = "GET /logs HTTP/1.1";
+        assertTrue(new String(response.getBody()).contains(expectedLog));
     }
 
 }
