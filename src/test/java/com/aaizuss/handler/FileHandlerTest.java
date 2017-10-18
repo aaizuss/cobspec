@@ -16,7 +16,7 @@ public class FileHandlerTest {
         MockDirectory directory = MockDirectory.emptyDirectory();
 
         FileHandler subject = new FileHandler(directory);
-        Request request = new Request(RequestMethods.GET, "nonExistentFile");
+        Request request = new Request(RequestMethods.GET, "/nonExistentFile");
 
         Response response = subject.execute(request);
 
@@ -62,7 +62,7 @@ public class FileHandlerTest {
 
     @Test
     public void givenRequestForAGifFileInDirectoryItReturnsOk() {
-        MockDirectory directory = MockDirectory.withFile("gif-file.png");
+        MockDirectory directory = MockDirectory.withFile("gif-file.gif");
 
         FileHandler subject = new FileHandler(directory);
         Request request = new Request(RequestMethods.GET, "/gif-file.gif");

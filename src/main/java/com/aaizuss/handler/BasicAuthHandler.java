@@ -1,28 +1,27 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.MemoryResource;
+import com.aaizuss.datastore.DataStore;
 import com.aaizuss.http.*;
 
 public class BasicAuthHandler implements Handler {
 
     private static String AUTH_INFO = "admin:hunter2";
-    private MemoryResource log;
+    private RequestLogger logger;
 
-    public BasicAuthHandler(MemoryResource log) {
-        this.log = log;
+    public BasicAuthHandler(DataStore directory) {
+        this.logger = new RequestLogger(directory);
     }
 
     @Override
     public Response execute(Request request) {
-        String requestLine = getRequestLine(request);
-        log.appendData(requestLine);
+        logger.logRequest(request);
 
         Response response = new Response(Status.UNAUTHORIZED);
         response.setHeader(Header.WWW_AUTHORIZATION, "Basic");
 
         if (validCredentials(request)) {
             response.setStatus(Status.OK);
-            response.setBody(sillyCobspecExpectation());
+            response.setBody(logger.getLogs());
         }
 
         return response;
@@ -41,16 +40,5 @@ public class BasicAuthHandler implements Handler {
             }
         }
         return false;
-    }
-
-    private String getRequestLine(Request request) {
-        String method = request.getMethod();
-        String uri = request.getUri();
-        String version = request.getHttpVersion();
-        return method + uri + version;
-    }
-
-    private String sillyCobspecExpectation() {
-        return "GET /log HTTP/1.1\nPUT /these HTTP/1.1\nHEAD /requests HTTP/1.1\n";
     }
 }
