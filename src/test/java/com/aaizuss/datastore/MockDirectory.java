@@ -10,10 +10,6 @@ import java.util.TreeMap;
 public class MockDirectory implements DataStore {
 
     private String pathString;
-
-//    private String file;
-//    private String text = "";
-//    private ArrayList<String> contents = new ArrayList<>();
     private Hashtable<String,String> filesAndContents = new Hashtable<>();
 
     private String folder;
@@ -29,10 +25,6 @@ public class MockDirectory implements DataStore {
 
     public static MockDirectory withTextFile(String fileName, String text) {
         return new MockDirectory(fileName, text);
-    }
-
-    public static MockDirectory withFolder(String folderName, ArrayList<String> contents) {
-        return new MockDirectory(folderName, contents);
     }
 
     public static MockDirectory withContents(ArrayList<String> contents) {
@@ -77,7 +69,7 @@ public class MockDirectory implements DataStore {
 
     @Override
     public boolean containsResource(String identifier) {
-        String resourceName = identifier.substring(1, identifier.length());
+        String resourceName = getResourceNameFromUri(identifier);
         for (String item : filesAndContents.keySet()) { //this is dumb but it's a mock
             if (resourceName.equals(item)) {
                 return true;
@@ -113,7 +105,7 @@ public class MockDirectory implements DataStore {
 
     @Override
     public byte[] read(String uri) {
-        String fileName = uri.substring(1, uri.length());
+        String fileName = getResourceNameFromUri(uri);
         return filesAndContents.get(fileName).getBytes();
     }
 
@@ -131,7 +123,7 @@ public class MockDirectory implements DataStore {
 
     @Override
     public void writeToResource(String uri, String content, boolean append) {
-        String fileName = uri.substring(1, uri.length());
+        String fileName = getResourceNameFromUri(uri);
         String text = filesAndContents.get(fileName);
         if (append) {
             text += "\n" + content;
@@ -144,13 +136,17 @@ public class MockDirectory implements DataStore {
 
     @Override
     public void clearDataFromResource(String uri) {
-        String fileName = uri.substring(1, uri.length());
+        String fileName = getResourceNameFromUri(uri);
         filesAndContents.put(fileName, "");
     }
 
     @Override
     public void delete(String uri) {
-        String resourceName = uri.substring(0, uri.length());
+        String resourceName = getResourceNameFromUri(uri);
         filesAndContents.remove(resourceName);
+    }
+
+    private String getResourceNameFromUri(String uri) {
+        return uri.substring(1, uri.length());
     }
 }
