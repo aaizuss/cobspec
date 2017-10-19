@@ -4,6 +4,7 @@ It's essentially a file server (it can serve text, html, jpeg/jpg, png, and gif 
 * Range requests to serve partial content from a text file
 * Decoding parameters
 * Setting a cookie
+* Basic Authentication (try `GET /logs`)
 * HTTP Methods: `GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS`
 
 ### Dependencies
@@ -16,7 +17,7 @@ It's essentially a file server (it can serve text, html, jpeg/jpg, png, and gif 
         * `mvn install:install-file -Dfile=./target/micro-server-1.0-SNAPSHOT.jar -DpomFile=./pom.xml`
 
 ### Compilation
-* `mvn package` then `mvn clean compile assembly:single` builds a jar with dependencies
+* `mvn package && mvn clean compile assembly:single` builds a jar with dependencies
 
 ### Tests
 * Unit Tests: `mvn test`

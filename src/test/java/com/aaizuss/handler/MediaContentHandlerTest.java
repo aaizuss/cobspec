@@ -1,9 +1,8 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.datastore.DataStore;
+import com.aaizuss.datastore.MockDirectory;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Status;
-import com.aaizuss.datastore.MockInnerDirectory;
 import com.aaizuss.http.Request;
 import com.aaizuss.http.Response;
 
@@ -11,13 +10,15 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class MediaContentHandlerTest {
-    private DataStore directory = new MockInnerDirectory();
+
+    private String[] directoryContents = {"broccoli.png", "pup1.jpg"};
+    private MockDirectory mockDirectory = MockDirectory.withPathStringAndContents("/test-directory/puppies/", directoryContents);
     private MediaContentHandler handler;
     private Request jpgRequest = new Request("GET", "/pup1.jpg");
 
     @Test
     public void givenImageRequestResponseIsOKAndContainsContentType() {
-        handler = new MediaContentHandler(directory);
+        handler = new MediaContentHandler(mockDirectory);
 
         Response response = handler.execute(jpgRequest);
 
@@ -28,7 +29,7 @@ public class MediaContentHandlerTest {
     @Test
     public void testPostRequestReturnsMethodNotAllowed() {
         Request postRequest = new Request("POST", "/pup1.jpg");
-        handler = new MediaContentHandler(directory);
+        handler = new MediaContentHandler(mockDirectory);
 
         Response response = handler.execute(postRequest);
 
@@ -38,7 +39,7 @@ public class MediaContentHandlerTest {
     @Test
     public void testOptionsRequest() {
         Request optionsRequest = new Request("OPTIONS", "/pup1.jpg");
-        handler = new MediaContentHandler(directory);
+        handler = new MediaContentHandler(mockDirectory);
 
         Response response = handler.execute(optionsRequest);
 
