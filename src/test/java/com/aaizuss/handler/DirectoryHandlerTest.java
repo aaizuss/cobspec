@@ -12,13 +12,14 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class DirectoryHandlerTest {
-    private static DataStore directory;
+    private static MockDirectory directory;
     private static DirectoryHandler handler;
     private Request request = new Request("GET", "/");
 
     @BeforeClass
     public static void setUp() throws DirectoryNotFoundException, IOException {
-        directory = new MockRootDirectory();
+        String[] rootContents = {"journey", "puppies", "text-file.txt"};
+        directory = MockDirectory.withPathStringAndContents("/test-directory/", rootContents);
         handler = new DirectoryHandler(directory);
     }
 
@@ -43,8 +44,9 @@ public class DirectoryHandlerTest {
 
         @Test
     public void testInnerDirectory() throws DirectoryNotFoundException {
-        DataStore inner = new MockInnerDirectory();
-        handler = new DirectoryHandler(inner, directory);
+        String[] innerContents = {"broccoli.png", "pup1.jpg"};
+        MockDirectory mockInner = MockDirectory.withPathStringAndContents("/test-directory/puppies/", innerContents);
+        handler = new DirectoryHandler(mockInner, directory);
         Response response = handler.execute(request);
         String expectedBody = "<a href='/puppies/..'>< Back</a></br>\r\n" +
                 "<a href='/puppies/broccoli.png'>broccoli.png</a></br>\r\n" +

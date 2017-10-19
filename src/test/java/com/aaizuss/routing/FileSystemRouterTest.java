@@ -1,8 +1,7 @@
 package com.aaizuss.routing;
 
 import com.aaizuss.*;
-import com.aaizuss.datastore.DataStore;
-import com.aaizuss.datastore.MockRootDirectory;
+import com.aaizuss.datastore.MockDirectory;
 import com.aaizuss.handler.FileHandler;
 import com.aaizuss.handler.FormHandler;
 import com.aaizuss.handler.Handler;
@@ -18,16 +17,17 @@ import static junit.framework.TestCase.assertFalse;
 
 public class FileSystemRouterTest {
     private static FileSystemRouter router;
-    private static DataStore directory;
+    private static MockDirectory mockDirectory;
 
     @BeforeClass
     public static void onlyOnce() {
-        directory = new MockRootDirectory();
+        String[] contents = {"journey", "puppies", "text-file.txt"};
+        mockDirectory = MockDirectory.withPathStringAndContents("/test-directory/", contents);
     }
 
     @Before
     public void setUp() {
-        router = new FileSystemRouter(directory);
+        router = new FileSystemRouter(mockDirectory);
     }
 
     @Test
@@ -48,8 +48,11 @@ public class FileSystemRouterTest {
 
     @Test
     public void testGetResponseForValidImageRequest() {
-        Request puppy = new Request("GET","/puppies/broccoli.png");
-        Response response = router.getResponse(puppy);
+        String[] innerContents = {"broccoli.png"};
+        MockDirectory mockInner = MockDirectory.withPathStringAndContents("test-directory/puppies/", innerContents);
+        Request puppy = new Request("GET","/broccoli.png");
+        Router subject = new FileSystemRouter(mockInner);
+        Response response = subject.getResponse(puppy);
 
         assertEquals(Status.OK, response.getStatus());
     }
