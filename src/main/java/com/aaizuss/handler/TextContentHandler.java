@@ -1,6 +1,5 @@
 package com.aaizuss.handler;
 
-import com.aaizuss.FileTypeReader;
 import com.aaizuss.http.Header;
 import com.aaizuss.http.Status;
 import com.aaizuss.datastore.DataStore;
